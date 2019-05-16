@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.electricpower">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+
+
+    <!-- Needed only if your app targets Android 5.0 (API level 21) or higher. -->
+    <uses-feature android:name="android.hardware.location.gps" />
+
+
+    <application
+        android:name=".AppApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.Base">
+        <activity
+            android:name=".view.LoginActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".view.test01" android:screenOrientation="portrait"/>
+        <activity android:name=".view.XiugaimimaActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".view.GerenxinxiActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".view.FujinshebeilibiaoActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".view.NichengActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".view.ChangjianwentiActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".view.WangjimimaActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".view.ZhuceActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".view.Ttest" android:screenOrientation="portrait"/>
+        <activity android:name=".view.YijianfankuiActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".view.GuanyuActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".view.ChartTest" android:screenOrientation="portrait"/>
+    </application>
+
+</manifest>
