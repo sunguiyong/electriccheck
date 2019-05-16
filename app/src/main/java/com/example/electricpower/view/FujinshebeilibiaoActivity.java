@@ -179,7 +179,9 @@ public class FujinshebeilibiaoActivity extends BaseActivity implements View.OnCl
             if (action.equals(BluetoothDevice.ACTION_FOUND)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 //                tt1.append("\n" + device.getName() + "--->" + device.getAddress() + "--" + device.getBondState() + "-" + device.getType());
-                list.add(device);
+                if (!list.contains(device)){
+                    list.add(device);
+                }
                 FujinshebeiAdapter adapter = new FujinshebeiAdapter(FujinshebeilibiaoActivity.this, R.layout.item_fujinshebei, list);
                 listFujinshebeiliebiao.setAdapter(adapter);
                 adapter.notifyDataSetChanged();

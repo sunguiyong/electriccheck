@@ -31,6 +31,9 @@ public class ShebeiFragment extends BaseFragment {
             list.add(j2);
             Jianzhuliebiao j3 = new Jianzhuliebiao("新希望科技大厦", 300, 33);
             list.add(j3);
+
+
+
         }
     }
 
