@@ -11,8 +11,8 @@ public class Ttest extends BaseActivity {
 
     @Override
     public void initData() {
-        Thermometer thermometer=new Thermometer(mContext);
-        thermometer.setTargetTemperature(99);
+//        Thermometer thermometer=new Thermometer(mContext);
+//        thermometer.setTargetTemperature(99);
 
     }
 

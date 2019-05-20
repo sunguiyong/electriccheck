@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/wenduji_bg" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/shuiyin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16.5dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginBottom="6dp"
+            android:src="@drawable/wenduji" />
+        <View
+
+            android:layout_marginLeft="97dp"
+            android:layout_marginBottom="6dp"
+            android:layout_marginTop="9dp"
+            android:background="@color/gray"
+            android:layout_width="63dp"
+            android:layout_height="400dp"/>
+    </RelativeLayout>
+
+</FrameLayout>

@@ -29,6 +29,7 @@
                 android:textSize="@dimen/gerenxinxi" />
 
             <com.facebook.drawee.view.SimpleDraweeView
+                fresco:roundedCornerRadius="100dp"
                 android:id="@+id/touxiang_img"
                 android:layout_width="60dp"
                 android:layout_height="60dp"

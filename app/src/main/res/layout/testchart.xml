@@ -16,10 +16,165 @@
             android:orientation="vertical">
 
 
+            <!--<LinearLayout-->
+            <!--android:background="@color/green"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="250dp"-->
+            <!--android:orientation="horizontal">-->
+            <!--<RelativeLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_height="wrap_content">-->
+            <!--<com.example.electricpower.view.Sphygmomanometer1-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
+            <!--<ImageView-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:background="@drawable/wendu_bg"-->
+            <!--android:layout_gravity="center|right"-->
+            <!--android:layout_width="60dp"-->
+            <!--android:layout_height="30dp">-->
+            <!--</ImageView>-->
+            <!--<TextView-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:paddingLeft="30dp"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="60%"-->
+            <!--android:textSize="18sp"-->
+            <!--android:textColor="@color/white" />-->
+
+            <!--</RelativeLayout>-->
+
+            <!--<RelativeLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_height="match_parent">-->
+            <!--<com.example.electricpower.view.Sphygmomanometer-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
+            <!--<ImageView-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_marginRight="20dp"-->
+            <!--android:background="@drawable/shidubg"-->
+            <!--android:layout_gravity="center|right"-->
+            <!--android:layout_width="60dp"-->
+            <!--android:layout_height="30dp">-->
+            <!--</ImageView>-->
+            <!--<TextView-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:paddingRight="30dp"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="60%"-->
+            <!--android:textSize="18sp"-->
+            <!--android:textColor="@color/white" />-->
+
+            <!--</RelativeLayout>-->
+            <!---->
+
+            <!--</LinearLayout>-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="250dp">
 
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp">
+
+                    <ImageView
+                        android:id="@+id/wendutext_img"
+                        android:layout_width="70dp"
+                        android:layout_height="50dp"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/wendu_bg" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="15dp"
+                        android:text="60℃"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_toRightOf="@+id/wendutext_img">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/wendutext_img"
+                            android:paddingLeft="16dp"
+                            android:src="@drawable/wenduji_bg" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="3dp"
+                            android:paddingBottom="2dp"
+                            android:src="@drawable/wenduji" />
+                    </FrameLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingTop="20dp"
+                    android:paddingRight="15dp"
+                    android:paddingBottom="20dp">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_toLeftOf="@+id/shidu_bg">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/shidu_bg" />
+
+                        <ImageView
+                            android:id="@+id/shidu_bg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="16dp"
+                            android:paddingTop="3dp"
+                            android:paddingBottom="2dp"
+                            android:src="@drawable/shiduji" />
+                    </FrameLayout>
+
+                    <ImageView
+                        android:id="@id/shidu_bg"
+                        android:layout_width="70dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/shidubg" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:gravity="center|right"
+                        android:paddingRight="15dp"
+                        android:text="60%"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -34,12 +189,14 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
                     android:text="24小时温度" />
+
                 <TextView
-                    android:background="@color/white"
-                    android:paddingLeft="15dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="℃"/>
+                    android:background="@color/white"
+                    android:paddingLeft="15dp"
+                    android:text="℃" />
+
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/line_chart1"
                     android:layout_width="match_parent"
@@ -55,17 +212,19 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
                     android:text="24小时湿度" />
+
                 <TextView
-                    android:background="@color/white"
-                    android:paddingLeft="15dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="%"/>
+                    android:background="@color/white"
+                    android:paddingLeft="15dp"
+                    android:text="%" />
+
                 <com.github.mikephil.charting.charts.LineChart
-                    android:layout_marginBottom="20dp"
                     android:id="@+id/line_chart2"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
+                    android:layout_marginBottom="20dp"
                     android:padding="10dp"></com.github.mikephil.charting.charts.LineChart>
             </LinearLayout>
         </LinearLayout>

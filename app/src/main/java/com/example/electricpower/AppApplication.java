@@ -2,10 +2,14 @@ package com.example.electricpower;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.os.Handler;
+import android.support.multidex.MultiDex;
 import android.util.Log;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.facebook.drawee.backends.pipeline.Fresco;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,10 +34,16 @@ public class AppApplication extends Application
 		super.onCreate();
 		instance = this;
 		mRequestQueue = Volley.newRequestQueue(this, null);
+		Fresco.initialize(this);
+
 
 	}
 
-
+	@Override
+	protected void attachBaseContext(Context base) {
+		super.attachBaseContext(base);
+		MultiDex.install(base);
+	}
 
 	public static AppApplication getInstance()
 	{

@@ -46,7 +46,6 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
         super.onCreate(savedInstanceState);
         TAG = this.getClass().getSimpleName().toString();
         mContext = this;
-        Fresco.initialize(this);
         setContentView(getLayoutId());
         //添加activity到堆栈
         AppApplication.getInstance().addActivity(this);

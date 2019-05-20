@@ -1,5 +1,6 @@
 package com.example.electricpower.view;
 
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -7,24 +8,21 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
 
 import com.example.electricpower.R;
 
 import java.text.DecimalFormat;
 
-public class Thermometer extends SurfaceView implements SurfaceHolder.Callback, Runnable {
+public class Sphygmomanometer1 extends SurfaceView implements SurfaceHolder.Callback, Runnable {
 
     private SurfaceHolder mHolder;
     private Canvas mCanvas;
 
-    //定义温度的范围
+    //定义刻度的范围
     int temperatureRange = 5;
-
     //定义一个盘快的范围
     private RectF mRange = new RectF();
     //定义温度计的宽度和中心宽度
@@ -67,13 +65,9 @@ public class Thermometer extends SurfaceView implements SurfaceHolder.Callback, 
      * 当前温度是有程序根据不同的速度和目标温度计算出来的，
      * 目标温度则是由仪器传送过来的数据
      */
-    //起始温度
     private float BeginTenperature = (float) 0;
-    //结束温度
-    private int EndTenperature = 100;
-    private volatile float CurrentTemperature = (float) 90;
-
-    //目标温度
+    private int EndTenperrature = 100;
+    private volatile float CurrentTemperature = (float) 20;
     float TargetTemperature = 60;
 
     /**
@@ -82,7 +76,7 @@ public class Thermometer extends SurfaceView implements SurfaceHolder.Callback, 
     int everySecondTime = 50;
 
     //设置文字的大小
-    private float mTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SHIFT, 40, getResources().getDisplayMetrics());
+    private float mTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SHIFT, 25, getResources().getDisplayMetrics());
     private float mSymbolTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SHIFT, 35, getResources().getDisplayMetrics());
     private float mShowSymbolTextSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SHIFT, 45, getResources().getDisplayMetrics());
     /**
@@ -100,14 +94,13 @@ public class Thermometer extends SurfaceView implements SurfaceHolder.Callback, 
      * @param context
      */
     private Boolean isRunning;
-
     private DecimalFormat fomat;//格式化float
 
-    public Thermometer(Context context) {
+    public Sphygmomanometer1(Context context) {
         this(context, null);
     }
 
-    public Thermometer(Context context, AttributeSet attrs) {
+    public Sphygmomanometer1(Context context, AttributeSet attrs) {
         super(context, attrs);
         mHolder = getHolder();
         mHolder.addCallback(this);
@@ -117,26 +110,24 @@ public class Thermometer extends SurfaceView implements SurfaceHolder.Callback, 
     @Override
     protected void onMeasure(int with, int height) {
         super.onMeasure(with, height);
-        //获取的是view原始的大小，也就是这个view在XML文件中配置或者是代码中设置的大小
         this.mWith = getMeasuredWidth() / 2;
         this.mHeight = getMeasuredHeight();
-        Log.d("getMeasuredHeight", getMeasuredHeight() + "");
         //这里先把中心设置在屏幕的中心
-        this.centerWith = mWith / 2;
-        this.centerHeight = mHeight / 2;
+        this.centerWith = mWith ;
+        this.centerHeight = mHeight ;
         //设置水银的宽度,暂时设置为总宽度的十五分之一
-        MercuryWith = mWith / 15;
+//        MercuryWith = mWith / 15;
+        MercuryWith=mWith/10;
         MinLineLong = MercuryWith;
-        //刻度线横向长度
         MidLineLong = MinLineLong * 8 / 5;
         MaxLineLong = MidLineLong * 3 / 2;
         //temperatureAllLong表示温度刻度总长度
         temperatureAllLong = mHeight * 7 / 10;
         //设置刻度间隔,包含了刻度线的长度
-        scaleLong = temperatureAllLong / temperatureRange / 20;//表示一个温度十个刻度
+        scaleLong = temperatureAllLong / temperatureRange / 10;//表示一个温度十个刻度
 
 
-        abHeight = mHeight / 10;
+        abHeight = mHeight / 15;
     }
 
     @Override
@@ -145,14 +136,11 @@ public class Thermometer extends SurfaceView implements SurfaceHolder.Callback, 
         LinePaint = new Paint();
         //去锯齿
         LinePaint.setAntiAlias(true);
-        //刻度颜色
         LinePaint.setColor(Color.GRAY);
         LinePaint.setStyle(Paint.Style.STROKE);
-        //刻度线宽
         LinePaint.setStrokeWidth(2);
         //初始化画笔
         TextPaint = new Paint();
-        //刻度值字体颜色
         TextPaint.setColor(Color.GRAY);
         TextPaint.setTextSize(mTextSize);
         TextPaint.setShader(null);
@@ -219,7 +207,8 @@ public class Thermometer extends SurfaceView implements SurfaceHolder.Callback, 
     private void drawShowHeightAndShow() {
 
         //这里控制水银的上升速度
-        float difference = Math.abs(TargetTemperature - CurrentTemperature) / 60;
+        //这里要除以20，是因为血压计的刻度值，到温度计的刻度值，是二十倍的换算，主要是偷懒
+        float difference = Math.abs(TargetTemperature - CurrentTemperature) / 20;
         /**
          * //这里定义一个boolean来控制是使用加法还是减法，其中true表示当前温度小于
          * 目标温度，要使用加法，false表示当前温度大于目标温度，要使用减法。
@@ -262,21 +251,21 @@ public class Thermometer extends SurfaceView implements SurfaceHolder.Callback, 
 
         Paint RectPaint = new Paint();
         RectPaint.setStyle(Paint.Style.FILL);
-        //水银柱颜色
         RectPaint.setColor(getResources().getColor(R.color.green_near));
 //        RectPaint.setColor(getResources().getColor(R.color.theme_color));
 //        这里主要是对温度的显示，画矩形的过程中，唯一改变的就是Top这一个值了
+        //这里(CurrentTemperature-BeginTenperature)/20表示的是刻度值的换算，从温度计过度到血压计的刻度值
         if (Math.abs(CurrentTemperature - TargetTemperature) > 0.8)
             mCanvas.drawRect(centerWith - MercuryWith / 2,
                     (scaleLong) * 10 * (temperatureRange) + abHeight * 2 -
-                            (CurrentTemperature - BeginTenperature) * 60 * scaleLong,
+                            (CurrentTemperature - BeginTenperature) / 20 * 10 * scaleLong,
                     centerWith + MercuryWith / 2,
                     (scaleLong) * 10 * (temperatureRange) + abHeight * 2,
                     RectPaint);
         else {
             mCanvas.drawRect(centerWith - MercuryWith / 2,
                     (scaleLong) * 10 * (temperatureRange) + abHeight * 2 -
-                            (TargetTemperature - BeginTenperature) / 60 * 10 * scaleLong,
+                            (TargetTemperature - BeginTenperature) / 20 * 10 * scaleLong,
                     centerWith + MercuryWith / 2,
                     (scaleLong) * 10 * (temperatureRange) + abHeight * 2,
                     RectPaint);
@@ -284,21 +273,23 @@ public class Thermometer extends SurfaceView implements SurfaceHolder.Callback, 
 
         //这里开始画显示的数字
         Paint ShowNumberTextPaint = new Paint();
-        ShowNumberTextPaint.setColor(Color.RED);
+        ShowNumberTextPaint.setColor(Color.BLACK);
         ShowNumberTextPaint.setTextSize(mShowSymbolTextSize);
         ShowNumberTextPaint.setShader(null);
         fomat = new DecimalFormat("##0.0");
         float display = Float.parseFloat(fomat.format(trueTemperature));
-        mCanvas.drawText(display + "",
-                mWith * 3 / 2 - ShowNumberTextPaint.getTextSize() * 2,
-                temperatureAllLong / 2 - ShowNumberTextPaint.getTextSize(),
-                ShowNumberTextPaint
-        );
-        mCanvas.drawText(display + "",
-                mWith * 3 / 2 - ShowNumberTextPaint.getTextSize() * 2,
-                temperatureAllLong / 2 + ShowNumberTextPaint.getTextSize(),
-                ShowNumberTextPaint
-        );
+//        mCanvas.drawText(display + " kpa",
+//                mWith * 3 / 2 - ShowNumberTextPaint.getTextSize() * 2,
+//                temperatureAllLong / 2 - ShowNumberTextPaint.getTextSize(),
+//                ShowNumberTextPaint
+//        );
+//
+//
+//        mCanvas.drawText(display + " kpa",
+//                mWith * 3 / 2 - ShowNumberTextPaint.getTextSize() * 2,
+//                temperatureAllLong / 2 + ShowNumberTextPaint.getTextSize(),
+//                ShowNumberTextPaint
+//        );
 
     }
 
@@ -311,18 +302,16 @@ public class Thermometer extends SurfaceView implements SurfaceHolder.Callback, 
         for (int i = 0; i < temperatureRange; i++) {
             mCanvas.drawLine(centerWith + MercuryWith / 2,
                     everyTemparaturHeight * i + abHeight * 2,//这里加上两倍的上距离
-                    centerWith + MercuryWith / 2 + MaxLineLong,
+                    centerWith + MercuryWith / 2 + MidLineLong,
                     everyTemparaturHeight * i + abHeight * 2, LinePaint);
-            mCanvas.drawText(EndTenperature - i + "", centerWith + MercuryWith / 2 + MaxLineLong + MinLineLong / 2,
-                    everyTemparaturHeight * i + TextPaint.getTextSize() / 2 + abHeight * 2, TextPaint);
-
-            //刻度线每隔5个变长
             for (int j = 1; j <= 9; j++) {
                 if (j == 5) {
                     mCanvas.drawLine(centerWith + MercuryWith / 2,
                             everyTemparaturHeight * i + j * (scaleLong) + abHeight * 2,
-                            centerWith + MercuryWith / 2 + MidLineLong,
+                            centerWith + MercuryWith / 2 + MaxLineLong,
                             everyTemparaturHeight * i + j * (scaleLong) + abHeight * 2, LinePaint);
+                    mCanvas.drawText(EndTenperrature - 30 - i * 20 + "", centerWith + MercuryWith / 2 + MaxLineLong + MinLineLong / 3,
+                            everyTemparaturHeight * i + j * (scaleLong) + abHeight * 2 + TextPaint.getTextSize() / 2, TextPaint);
                 } else {
                     mCanvas.drawLine(centerWith + MercuryWith / 2,
                             everyTemparaturHeight * i + j * (scaleLong) + abHeight * 2,
@@ -331,16 +320,11 @@ public class Thermometer extends SurfaceView implements SurfaceHolder.Callback, 
                 }
 
             }
-            //画最后一个刻度
-            if (i == temperatureRange - 1) {
 
-                mCanvas.drawLine(centerWith + MercuryWith / 2,
-                        everyTemparaturHeight * (i + 1) + abHeight * 2,//这里加上两倍的上距离
-                        centerWith + MercuryWith / 2 + MaxLineLong,
-                        everyTemparaturHeight * (i + 1) + abHeight * 2, LinePaint);
-                mCanvas.drawText(EndTenperature - (i + 1) + "", centerWith + MercuryWith / 2 + MaxLineLong + MinLineLong / 3,
-                        everyTemparaturHeight * (i + 1) + TextPaint.getTextSize() / 2 + abHeight * 2, TextPaint);
-            }
+        }
+
+        for (int i=0;i<temperatureRange;i++){
+
         }
         //画左边的刻度
         for (int i = 0; i < temperatureRange; i++) {
@@ -348,8 +332,16 @@ public class Thermometer extends SurfaceView implements SurfaceHolder.Callback, 
                     everyTemparaturHeight * i + abHeight * 2,
                     centerWith - MercuryWith / 2 - MaxLineLong,
                     everyTemparaturHeight * i + abHeight * 2, LinePaint);
-            mCanvas.drawText(EndTenperature - i + "", centerWith - (MercuryWith / 2 + MaxLineLong + MinLineLong / 3) - TextPaint.getTextSize(),
-                    everyTemparaturHeight * i + TextPaint.getTextSize() / 2 + abHeight * 2, TextPaint);
+            if (EndTenperrature - i * 20 > 99)
+                mCanvas.drawText(EndTenperrature - i * 20 + "", centerWith - (MercuryWith / 2 + MaxLineLong + MinLineLong / 3) - TextPaint.getTextSize() * 3 / 2,
+                        everyTemparaturHeight * i + TextPaint.getTextSize() / 2 + abHeight * 2, TextPaint);
+            else if (EndTenperrature - i * 20 > 9)
+                mCanvas.drawText(EndTenperrature - i * 20 + "", centerWith - (MercuryWith / 2 + MaxLineLong + MinLineLong / 3) - TextPaint.getTextSize(),
+                        everyTemparaturHeight * i + TextPaint.getTextSize() / 2 + abHeight * 2, TextPaint);
+            else if (EndTenperrature - i * 20 >= 0)
+                mCanvas.drawText(EndTenperrature - i * 20 + "", centerWith - (MercuryWith / 2 + MaxLineLong + MinLineLong / 3) - TextPaint.getTextSize() / 100,
+                        everyTemparaturHeight * i + TextPaint.getTextSize() / 2 + abHeight * 2, TextPaint);
+
             for (int j = 1; j <= 9; j++) {
                 if (j == 5) {
                     mCanvas.drawLine(centerWith - MercuryWith / 2,
@@ -370,54 +362,47 @@ public class Thermometer extends SurfaceView implements SurfaceHolder.Callback, 
                         everyTemparaturHeight * (i + 1) + abHeight * 2,
                         centerWith - MercuryWith / 2 - MaxLineLong,
                         everyTemparaturHeight * (i + 1) + abHeight * 2, LinePaint);
-                mCanvas.drawText(EndTenperature - (i + 1) + "", centerWith - (MercuryWith / 2 + MaxLineLong + MinLineLong / 3) - TextPaint.getTextSize(),
+                mCanvas.drawText(EndTenperrature - (i + 1) * 20 + "", centerWith - (MercuryWith / 2 + MaxLineLong + MinLineLong / 3) - TextPaint.getTextSize(),
                         everyTemparaturHeight * (i + 1) + TextPaint.getTextSize() / 2 + abHeight * 2, TextPaint);
             }
         }
-        //画水银柱底部圆形
+        //画红色的园
         Paint CirclePaint = new Paint();
         CirclePaint.setStyle(Paint.Style.FILL);
         CirclePaint.setColor(getResources().getColor(R.color.green_near));
-//        CirclePaint.setColor(getResources().getColor(R.color.theme_color));
+        //       CirclePaint.setColor(getResources().getColor(R.color.theme_color));
         mCanvas.drawCircle(centerWith,
                 everyTemparaturHeight * (temperatureRange) + abHeight * 2 + MercuryWith,
                 MercuryWith * 3 / 2, CirclePaint);
         //画摄氏度的符号
         Paint symbolTextPaint = new Paint();
-        symbolTextPaint.setColor(Color.BLUE);
+        symbolTextPaint.setColor(Color.BLACK);
         symbolTextPaint.setTextSize(mSymbolTextSize);
         symbolTextPaint.setShader(null);
-        mCanvas.drawText("℃",
-                centerWith - MaxLineLong / 2 - MercuryWith / 2 - symbolTextPaint.getTextSize() / 2,
-                abHeight * 2 - symbolTextPaint.getTextSize(),
-                symbolTextPaint
-        );
-        mCanvas.drawText("℃",
-                centerWith + MaxLineLong / 2 + MercuryWith / 2 - symbolTextPaint.getTextSize() / 2,
-                abHeight * 2 - symbolTextPaint.getTextSize(),
-                symbolTextPaint
-        );
+//        mCanvas.drawText("℃",
+//                centerWith - MaxLineLong / 2 - MercuryWith / 2 - symbolTextPaint.getTextSize() / 2,
+//                abHeight * 2 - symbolTextPaint.getTextSize(),
+//                symbolTextPaint
+//        );
+//        mCanvas.drawText("℃",
+//                centerWith + MaxLineLong / 2 + MercuryWith / 2 - symbolTextPaint.getTextSize() / 2,
+//                abHeight * 2 - symbolTextPaint.getTextSize(),
+//                symbolTextPaint
+//        );
+
 
         //绘制显示数字的符号和虚线
         Paint ShowsymbolTextPaint = new Paint();
-        ShowsymbolTextPaint.setColor(Color.BLUE);
+        ShowsymbolTextPaint.setColor(Color.BLACK);
         ShowsymbolTextPaint.setTextSize(mShowSymbolTextSize);
         ShowsymbolTextPaint.setShader(null);
-        mCanvas.drawText("℃",
-                mWith * 3 / 2,
-                temperatureAllLong / 2 - ShowsymbolTextPaint.getTextSize(),
-                ShowsymbolTextPaint
-        );
-        mCanvas.drawText("- - - - - - - -",
-                mWith + ShowsymbolTextPaint.getTextSize() * 3,
-                temperatureAllLong / 2,
-                ShowsymbolTextPaint
-        );
-        mCanvas.drawText("℃",
-                mWith * 3 / 2,
-                temperatureAllLong / 2 + ShowsymbolTextPaint.getTextSize(),
-                ShowsymbolTextPaint
-        );
+
+//        mCanvas.drawText("- - - - - - - -",
+//                mWith * 3 / 2 - ShowsymbolTextPaint.getTextSize() * 2,
+//                temperatureAllLong / 2,
+//                ShowsymbolTextPaint
+//        );
+
     }
 
     private float trueTemperature = 0;
@@ -427,9 +412,9 @@ public class Thermometer extends SurfaceView implements SurfaceHolder.Callback, 
         if (targetTemperature < 0) {
             targetTemperature = 0;
         }
-        if (targetTemperature > EndTenperature) {
-            targetTemperature = EndTenperature;
+        if (targetTemperature > EndTenperrature) {
+            targetTemperature = EndTenperrature;
         }
-        this.TargetTemperature = targetTemperature;
+        TargetTemperature = targetTemperature;
     }
 }

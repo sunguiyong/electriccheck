@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
@@ -176,19 +177,25 @@ public class FujinshebeilibiaoActivity extends BaseActivity implements View.OnCl
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
+            Log.d("onReceive method","is invoked");
             if (action.equals(BluetoothDevice.ACTION_FOUND)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 //                tt1.append("\n" + device.getName() + "--->" + device.getAddress() + "--" + device.getBondState() + "-" + device.getType());
                 if (!list.contains(device)){
                     list.add(device);
                 }
+
                 FujinshebeiAdapter adapter = new FujinshebeiAdapter(FujinshebeilibiaoActivity.this, R.layout.item_fujinshebei, list);
                 listFujinshebeiliebiao.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
-                Log.d("搜索中...", "Searching！");
+                Log.d("搜索到设备", device.getName()+"=="+device.getAddress());
             } else if (action.equals(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)) {
-                mBluetoothAdapter.cancelDiscovery();
-                Log.d("搜索完成！", "Searching");
+//                if (Build.MODEL.equals("PADT00")){
+//                    mBluetoothAdapter.cancelDiscovery();
+//                    unregisterReceiver(mReceiver);
+//                }
+//                mBluetoothAdapter.cancelDiscovery();
+                Log.d("搜索完成！", Build.MODEL+"");
                 searchstateTv.setText("设备列表");
                 refresh.finishRefresh();
             } else if (action.equals(BluetoothAdapter.ACTION_DISCOVERY_STARTED)) {
