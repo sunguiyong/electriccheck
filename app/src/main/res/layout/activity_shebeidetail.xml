@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_shebei_n" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="30dp">
+
+                <TextView
+                    android:id="@+id/xuanzeriqi_tv"
+                    android:layout_marginRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:background="@color/kongjianbeijing"
+                    android:gravity="center_vertical"
+                    android:text="请选择日期"
+                    android:layout_toLeftOf="@+id/search_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/search_tv"
+                    android:layout_alignParentRight="true"
+                    android:text="查询"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:background="@drawable/search_bg_n"
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+
+            <!--<LinearLayout-->
+            <!--android:background="@color/green"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="250dp"-->
+            <!--android:orientation="horizontal">-->
+            <!--<RelativeLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_height="wrap_content">-->
+            <!--<com.example.electricpower.view.Sphygmomanometer1-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
+            <!--<ImageView-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:background="@drawable/wendu_bg"-->
+            <!--android:layout_gravity="center|right"-->
+            <!--android:layout_width="60dp"-->
+            <!--android:layout_height="30dp">-->
+            <!--</ImageView>-->
+            <!--<TextView-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:paddingLeft="30dp"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="60%"-->
+            <!--android:textSize="18sp"-->
+            <!--android:textColor="@color/white" />-->
+
+            <!--</RelativeLayout>-->
+
+            <!--<RelativeLayout-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_height="match_parent">-->
+            <!--<com.example.electricpower.view.Sphygmomanometer-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent" />-->
+            <!--<ImageView-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_marginRight="20dp"-->
+            <!--android:background="@drawable/shidubg"-->
+            <!--android:layout_gravity="center|right"-->
+            <!--android:layout_width="60dp"-->
+            <!--android:layout_height="30dp">-->
+            <!--</ImageView>-->
+            <!--<TextView-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:paddingRight="30dp"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="60%"-->
+            <!--android:textSize="18sp"-->
+            <!--android:textColor="@color/white" />-->
+
+            <!--</RelativeLayout>-->
+            <!---->
+
+            <!--</LinearLayout>-->
+
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/kongjianbeijing"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="24小时温度" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingLeft="15dp"
+                    android:text="℃" />
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/line_chart1"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:padding="10dp">
+
+                </com.github.mikephil.charting.charts.LineChart>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/kongjianbeijing"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="24小时湿度" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingLeft="15dp"
+                    android:text="%" />
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/line_chart2"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_marginBottom="20dp"
+                    android:padding="10dp"></com.github.mikephil.charting.charts.LineChart>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

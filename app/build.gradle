@@ -30,6 +30,12 @@ android {
 
 
 dependencies {
+    //https://github.com/AigeStudio/DatePicker
+    implementation 'cn.aigestudio.datepicker:DatePicker:2.2.0'
+
+    //ble bluetooth
+    implementation 'com.clj.fastble:FastBleLib:2.3.4'
+
     //图片
     implementation 'com.facebook.fresco:fresco:1.3.0'
 //    底部tab
@@ -41,7 +47,7 @@ dependencies {
     implementation 'com.github.shaoshuai904:iOS_Style_Dialog:1.2.3'
 
 
-    //蓝牙
+    //蓝牙 https://github.com/dingjikerbo/Android-BluetoothKit
     implementation 'com.inuker.bluetooth:library:1.4.0'
 
     //图表

@@ -85,7 +85,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 break;
             }
             case R.id.fujinshebei_tv: {
-                Intent intent = new Intent(mContext, FujinshebeilibiaoActivity.class);
+                Intent intent = new Intent(mContext, FujinshebeilibiaoActivityCopy.class);
                 startActivity(intent);
                 break;
             }

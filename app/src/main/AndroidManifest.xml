@@ -5,8 +5,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <!--Android 6.0以后，这两个权限是必须的，蓝牙扫描周围的设备需要获取模糊的位置信息。
+    这两个权限属于同一组危险权限，在清单文件中声明之后，还需要再运行时动态获取-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.CAMERA"/>
@@ -16,14 +19,19 @@
     <uses-feature android:name="android.hardware.location.gps" />
 
 
+    <!--测试权限-->
+
+
     <application
         android:name=".AppApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.Base">
+        android:theme="@style/AppTheme.Base"
+        android:hardwareAccelerated = "false"
+        android:largeHeap="true">
         <activity
             android:name=".view.LoginActivity"
             android:screenOrientation="portrait">
@@ -46,6 +54,9 @@
         <activity android:name=".view.GuanyuActivity" android:screenOrientation="portrait"/>
         <activity android:name=".view.ChartTest" android:screenOrientation="portrait"/>
         <activity android:name=".view.GerenxinxiActivityCopy" android:screenOrientation="portrait"/>
+        <activity android:name=".view.ShebeiActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".view.FujinshebeilibiaoActivity1" android:screenOrientation="portrait"/>
+        <activity android:name=".view.FujinshebeilibiaoActivityCopy" android:screenOrientation="portrait"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"

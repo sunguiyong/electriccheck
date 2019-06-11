@@ -1,8 +1,11 @@
 package com.example.electricpower.view;
 
+import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,12 +24,15 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
-import butterknife.Bind;
 
-public class ChartTest extends BaseActivity implements View.OnClickListener, OnChartValueSelectedListener {
-    int x = R.layout.testchart;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
+public class ShebeiActivity extends BaseActivity implements View.OnClickListener, OnChartValueSelectedListener,DatePickerDialog.OnDateSetListener {
+    int x = R.layout.activity_shebeidetail;
     @Bind(R.id.line_chart1)
     LineChart mLineChart;
     @Bind(R.id.back_img)
@@ -35,7 +41,13 @@ public class ChartTest extends BaseActivity implements View.OnClickListener, OnC
     TextView shebeinameTv;
     @Bind(R.id.line_chart2)
     LineChart mlineChart1;
+    @Bind(R.id.xuanzeriqi_tv)
+    TextView xuanzeriqiTv;
+    @Bind(R.id.search_tv)
+    TextView searchTv;
 
+    private Calendar calendar;
+    private DatePickerDialog dialog;
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -43,14 +55,27 @@ public class ChartTest extends BaseActivity implements View.OnClickListener, OnC
                 finish();
                 break;
             }
-            default:break;
+            case R.id.xuanzeriqi_tv: {
+                calendar=Calendar.getInstance();
+                dialog=new DatePickerDialog(ShebeiActivity.this,this,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+                dialog.show();
+                break;
+            }
+            default:
+                break;
         }
+    }
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        String desc=String.format("%d年%d月%d日",year,month+1,dayOfMonth);
+        xuanzeriqiTv.setText(desc);
     }
 
     @Override
     public void bindListener() {
         mLineChart.setOnChartValueSelectedListener(this);
         backImg.setOnClickListener(this);
+        xuanzeriqiTv.setOnClickListener(this);
     }
 
 
@@ -68,7 +93,7 @@ public class ChartTest extends BaseActivity implements View.OnClickListener, OnC
 
     @Override
     public int getLayoutId() {
-        return R.layout.testchart;
+        return R.layout.activity_shebeidetail;
     }
 
     @Override
@@ -97,8 +122,6 @@ public class ChartTest extends BaseActivity implements View.OnClickListener, OnC
         leftAxis.setAxisMinimum(0);        //保证Y轴从0开始，不然会上移一点
         leftAxis.setDrawGridLines(false);
         leftAxis.setCenterAxisLabels(true);
-
-
 
 
         leftAxis.setAxisMaximum(100);//Y轴最大值
@@ -217,4 +240,13 @@ public class ChartTest extends BaseActivity implements View.OnClickListener, OnC
         mlineChart1.setPadding(20, 10, 10, 20);
         mlineChart1.setData(lineData);
     }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
+
 }

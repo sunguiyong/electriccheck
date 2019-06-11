@@ -52,7 +52,8 @@ public class ShebeiFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                Jianzhuliebiao jianzhuliebiao=list.get(position);
 //                showToast(jianzhuliebiao.getAddr());
-                Intent intent=new Intent(getActivity(),Ttest.class);
+                Intent intent=new Intent(getActivity(),ShebeiActivity.class);
+                intent.putExtra("name",list.get(position).getAddr());
                 startActivity(intent);
             }
         });
