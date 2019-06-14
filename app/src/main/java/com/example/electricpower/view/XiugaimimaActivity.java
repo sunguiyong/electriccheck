@@ -2,6 +2,8 @@ package com.example.electricpower.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -43,14 +45,24 @@ public class XiugaimimaActivity extends BaseActivity implements View.OnClickList
         myswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                if (isChecked){
+                    oldpswEt.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    newpswEt.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    oldpswEt.setSelection(oldpswEt.getText().length());
+                    newpswEt.setSelection(newpswEt.getText().length());
+                }else {
+                    oldpswEt.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    newpswEt.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    oldpswEt.setSelection(oldpswEt.getText().length());
+                    newpswEt.setSelection(newpswEt.getText().length());
+                }
             }
         });
     }
 
     @Override
     public void initData() {
-
+        myswitch.setChecked(false);
     }
 
     @Override

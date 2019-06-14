@@ -18,7 +18,7 @@
             android:layout_toRightOf="@+id/zhanghu_img"
             android:background="@null"
             android:hint="请输入旧密码"
-            android:inputType="phone"
+            android:inputType="textPassword"
             android:maxLength="11"
             android:maxLines="1"
             android:singleLine="true"
@@ -45,7 +45,7 @@
             android:layout_toRightOf="@+id/mima_img"
             android:background="@null"
             android:hint="请输入新密码"
-            android:inputType="number"
+            android:inputType="textPassword"
             android:textSize="16sp" />
 
     </RelativeLayout>
