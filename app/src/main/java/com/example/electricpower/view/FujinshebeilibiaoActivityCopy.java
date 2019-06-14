@@ -33,6 +33,9 @@ import java.util.Set;
 
 import butterknife.Bind;
 
+/**
+ * 低功耗蓝牙扫描附近设备
+ */
 public class FujinshebeilibiaoActivityCopy extends BaseActivity implements View.OnClickListener {
     int x = R.layout.activity_fujinshebeiliebiao;
 

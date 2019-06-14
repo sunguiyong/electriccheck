@@ -13,6 +13,7 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.example.electricpower.entity.to.TokenSave;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -126,14 +127,14 @@ public class ATTJsonRequest<T> extends Request<T>
 
             String b=js1.substring(1,js1.length()-1);
 
-            Log.d("b ----",b);
+//            Log.d("b ----",b);
 //            jsonString="{\"a\":\"1\",\"b\":\"2\",\"c\":3}";
             String a=b.replace("\\","");
 
-            Log.d("js1",a);
-            String jsonString =a;
+//            Log.d("js1",a);
+            String jsonString =js1;
 //            String jsonString = "{\"ErrorMsg\":\"\",\"ErrType\":3,\"data\":[{\"Id\":245,\"Name\":\"APP系统菜单\",\"Url\":null,\"Sort\":0,\"ParentId\":0,\"Active\":true,\"AppName\":\"App\"},{\"Id\":246,\"Name\":\"App工单上料\",\"Url\":null,\"Sort\":1,\"ParentId\":245,\"Active\":true,\"AppName\":\"App\"}]}";
-            Log.d("jsonString2",jsonString);
+//            Log.d("jsonString2",jsonString);
 
             JSONObject data = new JSONObject(jsonString);
 //            if(data.optInt("status") == 2){
@@ -267,6 +268,12 @@ public class ATTJsonRequest<T> extends Request<T>
         Map<String, String> header = new HashMap<String, String>();
 //        header.put("deviceId", ATTApplication.getInstance().getDeviceid());
         header.put("appkey", "testkey");
+        header.put("Authorization", TokenSave.token);
         return header;
+    }
+
+    @Override
+    public String getBodyContentType() {
+        return "application/json;charset="+getParamsEncoding();
     }
 }

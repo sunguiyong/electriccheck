@@ -45,31 +45,31 @@ public class test01 extends BaseActivity {
 
 
 
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, "http://120.25.153.127:8086/dtuApi/api/device/getDevicePage", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.d("ok","ok");
-                Log.d("response",response.toString());
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("lose","lose");
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                //Adding parameters to request
-                params.put("offset","1");
-                params.put("limit","1");
-
-                return params;
-            }
-        };
+//        StringRequest stringRequest=new StringRequest(Request.Method.POST, "http://120.25.153.127:8086/dtuApi/api/device/getDevicePage", new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                Log.d("ok","ok");
+//                Log.d("response",response.toString());
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.d("lose","lose");
+//            }
+//        }){
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//                Map<String,String> params = new HashMap<>();
+//                //Adding parameters to request
+//                params.put("offset","1");
+//                params.put("limit","1");
+//
+//                return params;
+//            }
+//        };
 
         //Adding the string request to the queue
-        executeRequest(stringRequest);
+//        executeRequest(stringRequest);
 
 
     }

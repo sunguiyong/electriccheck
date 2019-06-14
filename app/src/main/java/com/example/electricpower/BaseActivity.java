@@ -89,7 +89,6 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
     }
 
 
-
     /**
      * 自定义方法
      *
@@ -189,6 +188,10 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
             //透明导航栏
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
+    }
+
+    public void finishAllActivity() {
+        AppApplication.getInstance().finishAllActivity();
     }
 
 }

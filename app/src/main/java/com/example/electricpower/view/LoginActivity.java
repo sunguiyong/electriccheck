@@ -5,14 +5,25 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.example.electricpower.BaseActivity;
 import com.example.electricpower.R;
+import com.example.electricpower.entity.to.SaveData;
+import com.example.electricpower.entity.to.TokenSave;
+import com.example.electricpower.entity.to.login.LoginPost;
+import com.example.electricpower.entity.to.login.LoginReceived;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -41,6 +52,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     TextView zhucezhanghaoTv;
 
 
+    String url="http://192.168.8.30:9981/api/manager/login";
     private boolean eye = false;
 
     @Override
@@ -80,8 +92,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 break;
             }
             case R.id.denglu_bt: {
-                Intent intent = new Intent(mContext, test01.class);
-                startActivity(intent);
+                getData();
                 break;
             }
             case R.id.fujinshebei_tv: {
@@ -104,5 +115,35 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             default:
                 break;
         }
+    }
+
+    private void getData(){
+        Gson gson=new Gson();
+        LoginPost loginPost=new LoginPost();
+        loginPost.setMobile(zhanghaoTv.getText().toString());
+        loginPost.setPassword(mimaTv.getText().toString());
+        String jsonStr=gson.toJson(loginPost);
+        JsonObject jsonObject=new JsonParser().parse(jsonStr).getAsJsonObject();
+        getDataFromServer(Request.Method.POST, url, jsonObject, LoginReceived.class, new Response.Listener<LoginReceived>() {
+            @Override
+            public void onResponse(LoginReceived response) {
+                Log.d("请求","成功");
+                if (response.getStatus()==200){
+                    TokenSave.token=response.getResult().getToken();
+                    SaveData.userName=zhanghaoTv.getText().toString();
+                    SaveData.nick=response.getResult().getNick();
+                    Intent intent = new Intent(mContext, test01.class);
+                    startActivity(intent);
+                }else {
+                    showToast(response.getMessage());
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("请求","失败");
+
+            }
+        });
     }
 }

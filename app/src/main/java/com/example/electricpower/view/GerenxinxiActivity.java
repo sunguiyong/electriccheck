@@ -1,16 +1,13 @@
 package com.example.electricpower.view;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.hardware.camera2.CameraDevice;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
+import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -22,21 +19,22 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.example.electricpower.BaseActivity;
 import com.example.electricpower.R;
+import com.example.electricpower.entity.to.SaveData;
+import com.example.electricpower.entity.to.personalinfo.PersonalInfoReceived;
 import com.example.electricpower.utils.dialog.photo.FileUtil;
-import com.facebook.common.file.FileUtils;
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.maple.msdialog.ActionSheetDialog;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class GerenxinxiActivity extends BaseActivity implements View.OnClickListener {
     int x = R.layout.activity_gerenxinxi;
@@ -64,7 +62,12 @@ public class GerenxinxiActivity extends BaseActivity implements View.OnClickList
     ImageView backImg;
     public static final int RC_CHOOSE_PHOTO = 2;
     public static final int RC_TAKE_PHOTO = 1;
+    @Bind(R.id.zhanghao)
+    TextView zhanghao;
+    @Bind(R.id.nick)
+    TextView nick;
     private String imgUri = "http://www.desktx.com/d/file/wallpaper/meishi/20170711/a4342d8eec03e0fa463f00b4f1bbfa39.jpg";
+    private String url = "http://192.168.8.30:9981/api/manager/myMessage";
 
     @Override
     public void bindListener() {
@@ -78,6 +81,12 @@ public class GerenxinxiActivity extends BaseActivity implements View.OnClickList
     public void initData() {
 //        Uri uri=Uri.parse(imgUri);
 //        touxiangImg.setImageURI(uri);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getData();
     }
 
     @Override
@@ -181,10 +190,10 @@ public class GerenxinxiActivity extends BaseActivity implements View.OnClickList
     private Uri imageUri;
 
     private void takePhoto() {
-        File outputImage=new File(getExternalCacheDir(), "outputImage.jpg");
+        File outputImage = new File(getExternalCacheDir(), "outputImage.jpg");
         try {
             if (outputImage.exists()) {
-                Log.d("outputImage","delete");
+                Log.d("outputImage", "delete");
                 outputImage.delete();
             }
             outputImage.createNewFile();
@@ -193,11 +202,11 @@ public class GerenxinxiActivity extends BaseActivity implements View.OnClickList
         }
         if (Build.VERSION.SDK_INT >= 24) {
             imageUri = FileProvider.getUriForFile(GerenxinxiActivity.this, "com.rachel.studyapp.fileprovider", outputImage);
-            Log.d("imageUri","Build.VERSION.SDK_INT >= 24");
+            Log.d("imageUri", "Build.VERSION.SDK_INT >= 24");
 
         } else {
             imageUri = Uri.fromFile(outputImage);
-            Log.d("imageUri","Build.VERSION.SDK_INT < 24");
+            Log.d("imageUri", "Build.VERSION.SDK_INT < 24");
 
         }
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
@@ -248,4 +257,21 @@ public class GerenxinxiActivity extends BaseActivity implements View.OnClickList
             Log.d("摄像头出错！", "");
         }
     };
+
+    private void getData() {
+        getDataFromServer(Request.Method.POST, url, PersonalInfoReceived.class, new Response.Listener<PersonalInfoReceived>() {
+            @Override
+            public void onResponse(PersonalInfoReceived response) {
+                Log.d("个人信息请求","成功");
+                nick.setText(response.getResult().getNick());
+                zhanghao.setText(response.getResult().getMobile());
+                SaveData.nick=response.getResult().getNick();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("个人信息请求","失败");
+            }
+        });
+    }
 }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_fujinshebeiliebiaoback" />
+
+    <TextView
+        android:id="@+id/searchstate_tv"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text="设备列表" />
+
+    <!--<com.cjj.MaterialRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+        <!--android:id="@+id/refresh"-->
+        <!--android:background="@color/gray"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+
+        <ListView
+            android:dividerHeight="1px"
+            android:id="@+id/list_fujinshebeiliebiao"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    <!--</com.cjj.MaterialRefreshLayout>-->
+</LinearLayout>

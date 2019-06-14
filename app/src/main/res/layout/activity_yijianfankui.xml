@@ -7,44 +7,49 @@
     <include layout="@layout/toolbar_yijianfankui" />
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <EditText
+            android:id="@+id/content_et"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/white"
+            android:gravity="top"
             android:hint="请描述你的问题"
             android:maxLength="140"
             android:padding="5dp"
-            android:textSize="16sp"
-            android:gravity="top"
-            android:id="@+id/content_et"
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:background="@color/white"/>
+            android:textSize="16sp" />
+
         <TextView
             android:id="@+id/count_tv"
-            android:background="@color/white"
-            android:paddingRight="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="140字"
-            android:gravity="right"/>
+            android:background="@color/white"
+            android:gravity="right"
+            android:paddingRight="10dp"
+            android:text="140字" />
+
         <EditText
+            android:id="@+id/phoneormail_et"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/white"
+            android:hint="留下手机号或邮箱，以便为您提供更好的服务"
             android:inputType="text"
             android:maxLines="1"
-            android:textSize="16sp"
-            android:hint="请留下你的手机号或邮箱，以便为您提供更好的服务"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/white"
-            android:layout_marginTop="20dp"/>
+            android:textSize="16sp" />
+
         <Button
             android:id="@+id/tijiao_bt"
-            android:layout_marginTop="20dp"
-            android:textColor="@color/white"
-            android:background="@drawable/btn_bg_n"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:text="提交"/>
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_bg_n"
+            android:text="提交"
+            android:textColor="@color/white" />
     </LinearLayout>
 </LinearLayout>

@@ -10,21 +10,18 @@ import android.widget.TextView;
 
 import com.example.electricpower.R;
 import com.example.electricpower.entity.to.buildlist.BuildReceived;
-import com.example.electricpower.entity.to.listviewEntity.Jianzhuliebiao;
 
 import java.util.List;
-
-import javax.xml.transform.Result;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class JZAdapter extends ArrayAdapter<BuildReceived.ResultBean> {
+public class DeviceAdapter extends ArrayAdapter<BuildReceived.ResultBean> {
     int x = R.layout.item_jianzhuliebiao;
 
     private int resourId;
 
-    public JZAdapter(Context context, int resource, List<BuildReceived.ResultBean> objects) {
+    public DeviceAdapter(Context context, int resource, List<BuildReceived.ResultBean> objects) {
         super(context,resource,objects);
         resourId = resource;
     }

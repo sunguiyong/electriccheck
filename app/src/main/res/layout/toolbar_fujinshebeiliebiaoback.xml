@@ -19,24 +19,25 @@
             android:layout_centerVertical="true"
             android:src="@drawable/arrow_white_left"/>
         <TextView
+            android:id="@+id/devicename_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="昵称"
+            android:text="设备"
             android:textColor="@color/white"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:textSize="20sp"/>
         <TextView
-            android:id="@+id/define"
+            android:id="@+id/lishijilu_tv"
             android:gravity="center_vertical"
             android:layout_marginRight="20dp"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="确定"
+            android:text="历史记录"
             android:textColor="@color/white"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:textSize="18sp"/>
+            android:textSize="16sp"/>
     </RelativeLayout>
 </RelativeLayout>

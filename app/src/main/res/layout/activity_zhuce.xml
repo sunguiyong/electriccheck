@@ -107,11 +107,11 @@
                 android:layout_height="1px"
                 android:background="@color/gray"/>
             <Button
-                android:id="@+id/denglu_bt"
+                android:id="@+id/zhuce_bt"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/search_bg_n"
+                android:background="@drawable/btn_bg_n"
                 android:text="注册"
                 android:textColor="@color/white"
                 android:textSize="18sp" />

@@ -57,6 +57,7 @@
         <activity android:name=".view.ShebeiActivity" android:screenOrientation="portrait"/>
         <activity android:name=".view.FujinshebeilibiaoActivity1" android:screenOrientation="portrait"/>
         <activity android:name=".view.FujinshebeilibiaoActivityCopy" android:screenOrientation="portrait"/>
+        <activity android:name=".view.DeviceActivity" android:screenOrientation="portrait"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
