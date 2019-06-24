@@ -5,7 +5,7 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_shebei_n" />
+    <include layout="@layout/toolbar_deviceinfo" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -27,6 +27,7 @@
                     android:layout_weight="1">
 
                     <com.example.electricpower.view.MyView1
+                        android:id="@+id/myview1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                 </RelativeLayout>
@@ -36,6 +37,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1">
                     <com.example.electricpower.view.MyView2
+                        android:id="@+id/myview2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                 </RelativeLayout>

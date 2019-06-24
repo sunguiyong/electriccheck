@@ -108,7 +108,7 @@ public class MyView1 extends View {
 
         float heightTotal = getHeight() - 150f;
 
-        Log.d("getWidth()+getHeight()", getWidth() + "---" + getHeight());
+//        Log.d("getWidth()+getHeight()", getWidth() + "---" + getHeight());
         //绘制大刻度
         for (int i = 0; i < 6; i++) {
             canvas.drawLine(getWidth() / 2 + 50f,

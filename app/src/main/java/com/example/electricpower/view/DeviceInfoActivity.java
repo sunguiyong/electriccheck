@@ -1,11 +1,12 @@
 package com.example.electricpower.view;
 
-import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,9 +15,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.electricpower.BaseActivity;
 import com.example.electricpower.R;
+import com.example.electricpower.entity.to.DeviceInfo;
 import com.example.electricpower.entity.to.SaveData;
 import com.example.electricpower.entity.to.mpdata.MPToday;
-import com.example.electricpower.utils.dialog.photo.date.DateUtils;
+import com.example.electricpower.entity.to.wenshidu.WenShiGet;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -29,40 +31,34 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ShebeiActivity extends BaseActivity implements View.OnClickListener, OnChartValueSelectedListener, DatePickerDialog.OnDateSetListener {
-    int x = R.layout.activity_shebeidetail;
-    @Bind(R.id.line_chart1)
-    LineChart mLineChart;
+public class DeviceInfoActivity extends BaseActivity implements View.OnClickListener, OnChartValueSelectedListener {
+    int x = R.layout.activity_deviceinfo;
     @Bind(R.id.back_img)
     ImageView backImg;
-    @Bind(R.id.shebeiname_tv)
-    TextView shebeinameTv;
+    @Bind(R.id.devicename_tv)
+    TextView devicenameTv;
+    @Bind(R.id.line_chart1)
+    LineChart mLineChart;
     @Bind(R.id.line_chart2)
     LineChart mlineChart1;
-    @Bind(R.id.xuanzeriqi_tv)
-    TextView xuanzeriqiTv;
-    @Bind(R.id.search_tv)
-    TextView searchTv;
+    @Bind(R.id.history)
+    TextView history;
+    @Bind(R.id.myview1)
+    MyView1 myview1;
+    @Bind(R.id.myview2)
+    MyView2 myview2;
+
     private List<MPToday.ResultBean> list;
     List<MPToday.ResultBean> listT = new ArrayList<>();
     List<MPToday.ResultBean> listH = new ArrayList<>();
-    private Calendar calendar;
-    private DatePickerDialog dialog;
-    String desc;
-    private String dateChoose;
-    private boolean isChoose = false;
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -70,32 +66,10 @@ public class ShebeiActivity extends BaseActivity implements View.OnClickListener
                 finish();
                 break;
             }
-            case R.id.xuanzeriqi_tv: {
-                calendar = Calendar.getInstance();
-                dialog = new DatePickerDialog(ShebeiActivity.this, this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-                dialog.show();
-                break;
-            }
-            case R.id.search_tv: {
-                if (isChoose) {
-                    listT.clear();
-                    listH.clear();
-                    list.clear();
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    try {
-                        Date date = simpleDateFormat.parse(dateChoose);
-                        long time = date.getTime();
-                        String url = SaveData.baseUrl
-                                + "&dateTime="
-                                + time + "";
-                        Log.d("desc", "---" + url);
-                        getDataThis(url);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    showToast("日期不能为空");
-                }
+            case R.id.history: {
+//                showToast("shebeiactivity invoked!!");
+                Intent intent = new Intent(mContext, ShebeiActivity.class);
+                startActivity(intent);
                 break;
             }
             default:
@@ -104,63 +78,32 @@ public class ShebeiActivity extends BaseActivity implements View.OnClickListener
     }
 
     @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        desc = String.format("%d年%d月%d日", year, month + 1, dayOfMonth);
-        String d = "";
-        String m = "";
-        String y = year + "";
-        if (month + 1 < 10) {
-            m = "0" + (month + 1) + "";
-        } else {
-            m = (month - 1) + "";
-        }
-        if (dayOfMonth < 10) {
-            d = "0" + dayOfMonth;
-        } else {
-            d = dayOfMonth + "";
-        }
-        dateChoose = y + "-" + m + "-" + d + " 23:00:00";
-        Log.d("日期", dateChoose);
-        xuanzeriqiTv.setText(desc);
-        isChoose = true;
-    }
-
-    @Override
     public void bindListener() {
         mLineChart.setOnChartValueSelectedListener(this);
         backImg.setOnClickListener(this);
-        xuanzeriqiTv.setOnClickListener(this);
-        searchTv.setOnClickListener(this);
+        history.setOnClickListener(this);
     }
 
 
     @Override
     public void initData() {
+        devicenameTv.setText(getIntent().getStringExtra("devicename"));
 //        String name = getIntent().getExtras().getString("name");
 //        if (name == "" || name == null) {
 //            name = "未知设备名";
 //        }
 //        shebeinameTv.setText(name);
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        getDataThis(SaveData.url);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        list.clear();
-        listH.clear();
-        listT.clear();
+        getDataThis();
     }
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_shebeidetail;
+        return R.layout.activity_deviceinfo;
     }
 
     @Override
@@ -173,11 +116,10 @@ public class ShebeiActivity extends BaseActivity implements View.OnClickListener
 
     }
 
-    public void initTestData1(int size) {
+    public void initTestData1(int xSize) {
         Description description = new Description();
         description.setText("测试图表");
         description.setTextColor(Color.RED);
-
 
         Legend legend = mLineChart.getLegend();
         legend.setEnabled(false);
@@ -204,7 +146,7 @@ public class ShebeiActivity extends BaseActivity implements View.OnClickListener
         //x轴
         XAxis xAxis = mLineChart.getXAxis();
         xAxis.setAxisMinimum(0);
-        xAxis.setAxisMaximum(size - 1);
+        xAxis.setAxisMaximum(xSize-1);
         xAxis.setLabelCount(11);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);//x轴位置
         xAxis.setDrawGridLines(false);//x轴方向的背景线
@@ -222,7 +164,7 @@ public class ShebeiActivity extends BaseActivity implements View.OnClickListener
 
         //1.设置x轴和y轴的点
         List<Entry> entries = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < xSize; i++) {
             entries.add(new Entry(i, (float) listT.get(i).getNew_data() / 1000f));
         }
         LineDataSet dataSet = new LineDataSet(entries, "");
@@ -239,10 +181,13 @@ public class ShebeiActivity extends BaseActivity implements View.OnClickListener
         mLineChart.setBackgroundColor(Color.WHITE);
         mLineChart.setPadding(20, 10, 10, 20);
         mLineChart.setData(lineData);
-        mLineChart.animateY(1000);
+        mLineChart.invalidate();//refresh
+        mLineChart.animateY(1000);//动画效果
+
+
     }
 
-    public void initTestData2(int size) {
+    public void initTestData2(int xSize) {
         Description description = new Description();
         description.setText("测试图表");
         description.setTextColor(Color.RED);
@@ -271,7 +216,7 @@ public class ShebeiActivity extends BaseActivity implements View.OnClickListener
         //x轴
         XAxis xAxis = mlineChart1.getXAxis();
         xAxis.setAxisMinimum(0);
-        xAxis.setAxisMaximum(size - 1);
+        xAxis.setAxisMaximum(xSize - 1);
         xAxis.setLabelCount(11);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);//x轴位置
         xAxis.setDrawGridLines(false);//x轴方向的背景线
@@ -288,8 +233,10 @@ public class ShebeiActivity extends BaseActivity implements View.OnClickListener
 
         //1.设置x轴和y轴的点
         List<Entry> entries = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < xSize; i++) {
+//            entries.add(new Entry(i, new Random().nextInt(80)));
             entries.add(new Entry(i, (float) listH.get(i).getNew_data() / 1000f));
+
         }
         LineDataSet dataSet = new LineDataSet(entries, "");
         dataSet.setDrawFilled(true);
@@ -299,17 +246,34 @@ public class ShebeiActivity extends BaseActivity implements View.OnClickListener
         LineData lineData = new LineData(dataSet);
 
 
-        mlineChart1.invalidate();//refresh
         mlineChart1.setScaleEnabled(false);
         mlineChart1.getDescription().setEnabled(false);
         mlineChart1.setBackgroundColor(Color.WHITE);
         mlineChart1.setPadding(20, 10, 10, 20);
+        mlineChart1.invalidate();//refresh
         mlineChart1.setData(lineData);
         mlineChart1.animateY(1000);
     }
 
-    private void getDataThis(String url) {
-        getDataFromServer(Request.Method.GET, url, MPToday.class, new Response.Listener<MPToday>() {
+    private Long GeneteNodeId(long devId, long nodeid) {
+        return devId * 1000000000 + nodeid;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        list.clear();
+        listH.clear();
+        listT.clear();
+    }
+
+    private void getDataThis() {
+        getDataFromServer(Request.Method.GET, SaveData.url, MPToday.class, new Response.Listener<MPToday>() {
             @Override
             public void onResponse(MPToday response) {
                 Log.d("GETdatathis", "成功");
@@ -339,5 +303,6 @@ public class ShebeiActivity extends BaseActivity implements View.OnClickListener
             }
         });
     }
+
 
 }

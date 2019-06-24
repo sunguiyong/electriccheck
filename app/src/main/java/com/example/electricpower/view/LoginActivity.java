@@ -102,7 +102,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
             case R.id.wangjimima_tv:
             {
-                Intent intent=new Intent(mContext,WangjimimaActivity.class);
+//                Intent intent=new Intent(mContext,WangjimimaActivity.class);
+                Intent intent=new Intent(mContext,ShebeiActivity.class);
                 startActivity(intent);
                 break;
             }

@@ -41,6 +41,7 @@
                 android:src="@drawable/icon_zhanghao" />
 
             <EditText
+                android:text="17701540105"
                 android:id="@+id/zhanghao_tv"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -74,6 +75,7 @@
                 android:src="@drawable/icon_mima" />
 
             <EditText
+                android:text="111222"
                 android:id="@+id/mima_tv"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

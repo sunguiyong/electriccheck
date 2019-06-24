@@ -20,8 +20,9 @@ import com.example.electricpower.entity.to.DeviceInfo;
 
 public class MyView2 extends View {
     private Path path1 = new Path();
-    //传进来的温度
-    private float temperature = (float) DeviceInfo.temperature;
+    //传进来的湿度
+    private float humidity = (float) DeviceInfo.humidity;
+//    private float humidity = 28f;
 
     public MyView2(Context context) {
         super(context);
@@ -57,14 +58,14 @@ public class MyView2 extends View {
 
         //圆角矩形
         paint1.setAntiAlias(true);
-        paint1.setColor(getResources().getColor(R.color.green_near));
+        paint1.setColor(getResources().getColor(R.color.shidu));
         paint1.setStyle(Paint.Style.FILL);
         paint1.setStrokeWidth(10f);
         int viewWidth = this.getWidth();
 
         //水银柱矩形
         paint2.setAntiAlias(true);
-        paint2.setColor(getResources().getColor(R.color.green_near));
+        paint2.setColor(getResources().getColor(R.color.shidu));
         paint2.setStyle(Paint.Style.FILL);
         paint2.setStrokeWidth(10f);
 
@@ -90,7 +91,7 @@ public class MyView2 extends View {
         //画水银柱矩形背景
         canvas.drawRect(viewWidth / 2 - 45f, getHeight() - 150f, viewWidth / 2 + 45f, 95f, paint4);
         //画水银柱矩形
-        canvas.drawRect(viewWidth / 2 - 40f, getHeight() - 150f, viewWidth / 2 + 40f, ((getHeight() - 300f) / 100f) * (100f - temperature) + 100f, paint2);
+        canvas.drawRect(viewWidth / 2 - 40f, getHeight() - 150f, viewWidth / 2 + 40f, ((getHeight() - 300f) / 100f) * (100f - humidity) + 100f, paint2);
         //画刻度线
 //        canvas.drawLine(getWidth() / 2 + 150f,
 //                getHeight() - 150f, getWidth() - 350f, getHeight() - 150f, paint3);
@@ -108,26 +109,26 @@ public class MyView2 extends View {
 
         float heightTotal = getHeight() - 150f;
 
-        Log.d("getWidth()+getHeight()", getWidth() + "---" + getHeight());
+//        Log.d("getWidth()+getHeight()", getWidth() + "---" + getHeight());
         //绘制大刻度
         for (int i = 0; i < 6; i++) {
-            canvas.drawLine(getWidth() / 2 + 50f,
+            canvas.drawLine(getWidth() / 2 - 50f,
                     getHeight() - 200f - i * big,
-                    getWidth() / 2 + 100f,
+                    getWidth() / 2 - 100f,
                     getHeight() - 200f - i * big, paint3);
         }
         //小刻度
         for (int j = 0; j < 50; j++) {
-            canvas.drawLine(getWidth() / 2 + 50f,
+            canvas.drawLine(getWidth() / 2 - 50f,
                     getHeight() - 200f - j * small,
-                    getWidth() / 2 + 60f,
+                    getWidth() / 2 - 60f,
                     getHeight() - 200f - j * small, paint3);
         }
         //中刻度
         for (int k = 0; k < 5; k++) {
-            canvas.drawLine(getWidth() / 2 + 50f,
+            canvas.drawLine(getWidth() / 2 - 50f,
                     getHeight() - 200f - k * mid - big / 2,
-                    getWidth() / 2 + 70f,
+                    getWidth() / 2 - 70f,
                     getHeight() - 200f - k * mid - big / 2,
                     paint3);
         }
@@ -136,23 +137,25 @@ public class MyView2 extends View {
          */
         for (int i = 0; i < 6; i++) {
             canvas.drawText(i * 20 + "",
-                    getWidth() / 2 + 130f,
+                    getWidth() / 2 - 130f,
                     getHeight() - 190f - i * big,
                     paint3);
         }
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.wendu_bg);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.shidubg);
         Rect src, dst;
         src = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
         dst = new Rect(0, 0, bitmap.getWidth() / 6, bitmap.getHeight() / 6);
-        dst.left = 20;
-        dst.top = getHeight()/2-60;
-        dst.bottom=getHeight()/2+60;
-        dst.right=getWidth()/2-80;
+        //改变图片绘制位置、大小
+        dst.left = getWidth() / 2 + 80;
+        dst.top = getHeight() / 2 - 60;
+        dst.bottom = getHeight() / 2 + 60;
+        dst.right = getWidth() - 20;
 
         canvas.drawBitmap(bitmap, src, dst, null);
 
-        canvas.drawText((int)temperature+"℃",100,getHeight()/2+15,paint);
+        //绘制温湿度的显示文本
+        canvas.drawText((int) humidity + "%", getWidth()-100, getHeight() / 2 + 15, paint);
 
     }
 }

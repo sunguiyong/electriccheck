@@ -184,7 +184,7 @@ public class Thermometer extends SurfaceView implements SurfaceHolder.Callback, 
             draw();
             long end = System.currentTimeMillis();
             if (end - start < everySecondTime) {
-                //这里控制一下，一秒绘制二十次。也就是五十秒绘制一次
+                //这里控制一下，一秒绘制二十次。也就是五十毫秒绘制一次
                 try {
                     Thread.sleep(everySecondTime - (end - start));
                 } catch (InterruptedException e) {

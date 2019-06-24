@@ -42,6 +42,8 @@ public class XiugaimimaActivity extends BaseActivity implements View.OnClickList
     @Override
     public void bindListener() {
         define.setOnClickListener(this);
+        backImg.setOnClickListener(this);
+        //switch开关监听
         myswitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

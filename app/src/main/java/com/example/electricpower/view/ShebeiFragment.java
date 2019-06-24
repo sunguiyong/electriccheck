@@ -69,6 +69,8 @@ public class ShebeiFragment extends BaseFragment {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             Intent intent=new Intent(getActivity(),DeviceActivity.class);
+                            intent.putExtra("buildname",response.getResult().get(position).getBuildName());
+                            intent.putExtra("buildId",response.getResult().get(position).getId()+"");
                             startActivity(intent);
                         }
                     });

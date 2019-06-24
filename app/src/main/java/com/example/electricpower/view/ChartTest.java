@@ -56,11 +56,11 @@ public class ChartTest extends BaseActivity implements View.OnClickListener, OnC
 
     @Override
     public void initData() {
-        String name = getIntent().getExtras().getString("name");
-        if (name == "" || name == null) {
-            name = "未知设备名";
-        }
-        shebeinameTv.setText(name);
+//        String name = getIntent().getExtras().getString("name");
+//        if (name == "" || name == null) {
+//            name = "未知设备名";
+//        }
+//        shebeinameTv.setText(name);
         initTestData1();
         initTestData2();
 

@@ -22,14 +22,13 @@
             android:id="@+id/devicename_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="设备"
+            android:text="设备名"
             android:textColor="@color/white"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:textSize="20sp"/>
         <TextView
-            android:visibility="gone"
-            android:id="@+id/lishijilu_tv"
+            android:id="@+id/history"
             android:gravity="center_vertical"
             android:layout_marginRight="20dp"
             android:layout_alignParentRight="true"
@@ -39,6 +38,6 @@
             android:textColor="@color/white"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:textSize="16sp"/>
+            android:textSize="18sp"/>
     </RelativeLayout>
 </RelativeLayout>
