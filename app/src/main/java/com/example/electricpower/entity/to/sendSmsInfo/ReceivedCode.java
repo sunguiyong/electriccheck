@@ -3,16 +3,16 @@ package com.example.electricpower.entity.to.sendSmsInfo;
 public class ReceivedCode {
 
     /**
-     * message : string
-     * result : {}
-     * status : 0
-     * timestamp : 0
+     * message : success
+     * result : 30B0BD2D13BE404788A949DD3703E69C
+     * status : 200
+     * timestamp : 1561520773420
      */
 
     private String message;
-    private ResultBean result;
+    private String result;
     private int status;
-    private int timestamp;
+    private String timestamp;
 
     public String getMessage() {
         return message;
@@ -22,11 +22,11 @@ public class ReceivedCode {
         this.message = message;
     }
 
-    public ResultBean getResult() {
+    public String getResult() {
         return result;
     }
 
-    public void setResult(ResultBean result) {
+    public void setResult(String result) {
         this.result = result;
     }
 
@@ -38,14 +38,11 @@ public class ReceivedCode {
         this.status = status;
     }
 
-    public int getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(int timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public static class ResultBean {
     }
 }

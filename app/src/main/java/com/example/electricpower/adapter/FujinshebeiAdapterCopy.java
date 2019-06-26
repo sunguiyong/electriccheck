@@ -57,7 +57,7 @@ public class FujinshebeiAdapterCopy extends BaseAdapter {
         Log.d("信号", RSSI + "" + "----" + device.getName() + scanRecord);
         //如果不包含在内就放集合，去重&& device.getName().contains("MY")
         if (!mLeDevices.contains(device)) {
-            if (device.getName() != null && device.getName() != "" && device.getName().startsWith("MY")) {
+            if (device.getName() != null && device.getName() != "" && device.getName().startsWith("YG")) {
                 this.mLeDevices.add(device);
                 this.RSSIs.add(RSSI);
                 this.scanRecords.add(scanRecord);
@@ -107,19 +107,22 @@ public class FujinshebeiAdapterCopy extends BaseAdapter {
         }
 
         final String name = mLeDevices.get(position).getName();
-        if (name != null) {
-            viewHolder.name.setText(name);
-        } else {
-            viewHolder.name.setText("未知设备");
-        }
+//        if (name != null) {
+//            viewHolder.name.setText(name);
+//        } else {
+//            viewHolder.name.setText("未知设备");
+//        }
+        viewHolder.name.setText(mLeDevices.get(position).getAddress());
         Log.d("适配器NAME", mLeDevices.get(position).getName() + "===" + mLeDevices.get(position).getAddress());
 
 
         viewHolder.shebeiState.setText(RSSIs.get(position).toString() + "");
 
+        //获取到蓝牙广播数据进行处理
         String temp = scanRecords.get(position).toString();
         String wendu16 = temp.substring(22, 26);
         String shidu16 = temp.substring(26, 30);
+        //转16进制
         String wendu = new BigInteger(wendu16, 16).toString();
         String shidu = new BigInteger(shidu16, 16).toString();
         double wenduLast = Double.parseDouble(wendu) / 100;

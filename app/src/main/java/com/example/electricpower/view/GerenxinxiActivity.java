@@ -1,6 +1,9 @@
 package com.example.electricpower.view;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.camera2.CameraDevice;
@@ -75,6 +78,7 @@ public class GerenxinxiActivity extends BaseActivity implements View.OnClickList
         nicheng.setOnClickListener(this);
         xiugaimima.setOnClickListener(this);
         backImg.setOnClickListener(this);
+        tuichudengluBt.setOnClickListener(this);
     }
 
     @Override
@@ -235,6 +239,27 @@ public class GerenxinxiActivity extends BaseActivity implements View.OnClickList
                 finish();
                 break;
             }
+            case R.id.tuichudenglu_bt: {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                dialog.setTitle("确定退出吗？");
+
+                dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(mContext, LoginActivity.class);
+                        startActivity(intent);
+                    }
+                });
+                dialog.show();
+
+                break;
+            }
 
         }
     }
@@ -262,15 +287,15 @@ public class GerenxinxiActivity extends BaseActivity implements View.OnClickList
         getDataFromServer(Request.Method.POST, url, PersonalInfoReceived.class, new Response.Listener<PersonalInfoReceived>() {
             @Override
             public void onResponse(PersonalInfoReceived response) {
-                Log.d("个人信息请求","成功");
+                Log.d("个人信息请求", "成功");
                 nick.setText(response.getResult().getNick());
                 zhanghao.setText(response.getResult().getMobile());
-                SaveData.nick=response.getResult().getNick();
+                SaveData.nick = response.getResult().getNick();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("个人信息请求","失败");
+                Log.d("个人信息请求", "失败");
             }
         });
     }

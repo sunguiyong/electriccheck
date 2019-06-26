@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.electricpower.BaseFragment;
 import com.example.electricpower.R;
+import com.example.electricpower.entity.to.SaveData;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,11 +43,13 @@ public class WodeFragment extends BaseFragment implements View.OnClickListener {
         changjianwentiC.setOnClickListener(this);
         yijianfankuiC.setOnClickListener(this);
         guanyuC.setOnClickListener(this);
+        geren.setOnClickListener(this);
+
     }
 
     @Override
     public void initData() {
-        geren.setOnClickListener(this);
+        mylogin.setText(SaveData.nick);
     }
 
     @Override

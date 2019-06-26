@@ -52,7 +52,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     TextView zhucezhanghaoTv;
 
 
-    String url="http://192.168.8.30:9981/api/manager/login";
+    String url = "http://192.168.8.30:9981/api/manager/login";
     private boolean eye = false;
 
     @Override
@@ -100,16 +100,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 startActivity(intent);
                 break;
             }
-            case R.id.wangjimima_tv:
-            {
-//                Intent intent=new Intent(mContext,WangjimimaActivity.class);
-                Intent intent=new Intent(mContext,ShebeiActivity.class);
+            case R.id.wangjimima_tv: {
+                Intent intent = new Intent(mContext, WangjimimaActivity.class);
+//                Intent intent=new Intent(mContext,ShebeiActivity.class);
                 startActivity(intent);
                 break;
             }
-            case R.id.zhucezhanghao_tv:
-            {
-                Intent intent=new Intent(mContext,ZhuceActivity.class);
+            case R.id.zhucezhanghao_tv: {
+                Intent intent = new Intent(mContext, ZhuceActivity.class);
                 startActivity(intent);
                 break;
             }
@@ -118,31 +116,31 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
-    private void getData(){
-        Gson gson=new Gson();
-        LoginPost loginPost=new LoginPost();
+    private void getData() {
+        Gson gson = new Gson();
+        LoginPost loginPost = new LoginPost();
         loginPost.setMobile(zhanghaoTv.getText().toString());
         loginPost.setPassword(mimaTv.getText().toString());
-        String jsonStr=gson.toJson(loginPost);
-        JsonObject jsonObject=new JsonParser().parse(jsonStr).getAsJsonObject();
+        String jsonStr = gson.toJson(loginPost);
+        JsonObject jsonObject = new JsonParser().parse(jsonStr).getAsJsonObject();
         getDataFromServer(Request.Method.POST, url, jsonObject, LoginReceived.class, new Response.Listener<LoginReceived>() {
             @Override
             public void onResponse(LoginReceived response) {
-                Log.d("请求","成功");
-                if (response.getStatus()==200){
-                    TokenSave.token=response.getResult().getToken();
-                    SaveData.userName=zhanghaoTv.getText().toString();
-                    SaveData.nick=response.getResult().getNick();
+                Log.d("请求", "成功");
+                if (response.getStatus() == 200) {
+                    TokenSave.token = response.getResult().getToken();
+                    SaveData.userName = zhanghaoTv.getText().toString();
+                    SaveData.nick = response.getResult().getNick();
                     Intent intent = new Intent(mContext, test01.class);
                     startActivity(intent);
-                }else {
+                } else {
                     showToast(response.getMessage());
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("请求","失败");
+                Log.d("请求", "失败");
 
             }
         });

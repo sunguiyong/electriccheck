@@ -23,6 +23,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.electricpower.BaseActivity;
 import com.example.electricpower.R;
+import com.example.electricpower.entity.to.SaveData;
+import com.example.electricpower.entity.to.register.RegisterPost;
+import com.example.electricpower.entity.to.register.RegisterReceived;
 import com.example.electricpower.entity.to.sendSmsInfo.ReceivedCode;
 import com.example.electricpower.entity.to.sendSmsInfo.SendSms;
 import com.google.gson.Gson;
@@ -37,6 +40,8 @@ import butterknife.ButterKnife;
 
 public class ZhuceActivity extends BaseActivity implements View.OnClickListener {
     private String url = "http://192.168.8.30:9981/api/sms/sendSmsInfo";
+    private String registerUrl = SaveData.mainUrl + "manager/register";
+    private String resultSave;
     int x = R.layout.activity_zhuce;
     @Bind(R.id.back_img)
     ImageView backImg;
@@ -54,12 +59,12 @@ public class ZhuceActivity extends BaseActivity implements View.OnClickListener 
     Button zhuceBt;
     private boolean eye = false;
     private long time = 60000;
-    private CountDownTimer timer = new CountDownTimer(time+100, 1000) {
+    private CountDownTimer timer = new CountDownTimer(time + 100, 1000) {
         @Override
         public void onTick(long millisUntilFinished) {
             huoquyanzhengmaTv.setClickable(false);
             huoquyanzhengmaTv.setText(millisUntilFinished / 1000 + "秒");
-            Log.d("时间---", millisUntilFinished + "");
+//            Log.d("时间---", millisUntilFinished + "");
         }
 
         @Override
@@ -77,9 +82,10 @@ public class ZhuceActivity extends BaseActivity implements View.OnClickListener 
                 break;
             }
             case R.id.huoquyanzhengma_tv: {
-                if (isMobileNumber(zhanghaoTv.getText().toString())){
+                if (isMobileNumber(zhanghaoTv.getText().toString())) {
                     timer.start();
-                }else {
+                    getData();
+                } else {
                     showToast("请输入正确手机号！");
                 }
                 break;
@@ -101,7 +107,7 @@ public class ZhuceActivity extends BaseActivity implements View.OnClickListener 
                 break;
             }
             case R.id.zhuce_bt: {
-
+                getDataRegister();
                 break;
             }
         }
@@ -125,21 +131,24 @@ public class ZhuceActivity extends BaseActivity implements View.OnClickListener 
         return R.layout.activity_zhuce;
     }
 
+    /**
+     * 请求数据，post请求手机号
+     * 获取验证码
+     */
     private void getData() {
-        /**
-         * 请求数据，post请求手机号
-         * 获取验证码
-         */
         Gson gson = new Gson();
         SendSms sendSms = new SendSms();
-        sendSms.setMobile("13775452153");
+        sendSms.setMobile(zhanghaoTv.getText().toString());
         String jsonStr = gson.toJson(sendSms);
-        Log.d("jsonStr", jsonStr);
         JsonObject jsonObject = new JsonParser().parse(jsonStr).getAsJsonObject();
         getDataFromServer(Request.Method.POST, url, jsonObject, ReceivedCode.class, new Response.Listener<ReceivedCode>() {
             @Override
             public void onResponse(ReceivedCode response) {
                 Log.d("收到", response.toString());
+                resultSave = response.getResult();
+                if(response.getMessage().equals("手机号已经注册")){
+                    showToast(response.getMessage().toString());
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -156,7 +165,7 @@ public class ZhuceActivity extends BaseActivity implements View.OnClickListener 
      * 145, 147;
      * 130, 131, 132, 133, 134, 135, 136, 137, 138, 139;
      * 150, 151, 152, 153, 155, 156, 157, 158, 159;
-     *
+     * <p>
      * "13"代表前两位为数字13,
      * "[0-9]"代表第二位可以为0-9中的一个,
      * "[^4]" 代表除了4
@@ -166,5 +175,33 @@ public class ZhuceActivity extends BaseActivity implements View.OnClickListener 
         String telRegex = "^((13[0-9])|(15[^4])|(18[0-9])|(17[0-8])|(147,145))\\d{8}$";
 //        String telRegex2 = "^\\d{11}$";//只做11位校验
         return !TextUtils.isEmpty(mobiles) && mobiles.matches(telRegex);
+    }
+
+    public void getDataRegister() {
+        RegisterPost registerPost = new RegisterPost();
+        registerPost.setCode(yanzhengmaTv.getText().toString());
+        registerPost.setMobile(zhanghaoTv.getText().toString());
+        registerPost.setPassword(mimaTv.getText().toString());
+        registerPost.setSmsId(resultSave);
+        Gson gson = new Gson();
+        String str = gson.toJson(registerPost);
+        JsonObject jsonObject = new JsonParser().parse(str).getAsJsonObject();
+        getDataFromServer(Request.Method.POST, registerUrl, jsonObject, RegisterReceived.class, new Response.Listener<RegisterReceived>() {
+            @Override
+            public void onResponse(RegisterReceived response) {
+                Log.d("注册请求", "成功");
+                if (response.getMessage().equals("success")){
+                    showToast("注册成功！");
+                    Intent intent=new Intent(mContext,LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("注册请求", "失败");
+            }
+        });
     }
 }
