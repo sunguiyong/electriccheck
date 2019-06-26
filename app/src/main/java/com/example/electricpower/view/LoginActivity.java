@@ -21,6 +21,7 @@ import com.example.electricpower.entity.to.SaveData;
 import com.example.electricpower.entity.to.TokenSave;
 import com.example.electricpower.entity.to.login.LoginPost;
 import com.example.electricpower.entity.to.login.LoginReceived;
+import com.example.electricpower.utils.dialog.photo.apputil.AppUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -53,6 +54,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
 
     String url = "http://192.168.8.30:9981/api/manager/login";
+    @Bind(R.id.version_tv)
+    TextView versionTv;
     private boolean eye = false;
 
     @Override
@@ -66,6 +69,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void initData() {
+        versionTv.setText("版本号：" + AppUtils.getVersionName(mContext));
         fujinshebeiTv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
     }
 
