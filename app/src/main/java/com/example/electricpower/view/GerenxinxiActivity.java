@@ -6,6 +6,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.camera2.CameraDevice;
 import android.net.Uri;
 import android.os.Build;
@@ -29,16 +31,22 @@ import com.example.electricpower.BaseActivity;
 import com.example.electricpower.R;
 import com.example.electricpower.entity.to.SaveData;
 import com.example.electricpower.entity.to.personalinfo.PersonalInfoReceived;
+import com.example.electricpower.net.http.ResponseListener;
 import com.example.electricpower.utils.dialog.photo.FileUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.maple.msdialog.ActionSheetDialog;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+/**
+ * using
+ */
 public class GerenxinxiActivity extends BaseActivity implements View.OnClickListener {
     int x = R.layout.activity_gerenxinxi;
     @Bind(R.id.touxiang_tv)
@@ -71,6 +79,7 @@ public class GerenxinxiActivity extends BaseActivity implements View.OnClickList
     TextView nick;
     private String imgUri = "http://www.desktx.com/d/file/wallpaper/meishi/20170711/a4342d8eec03e0fa463f00b4f1bbfa39.jpg";
     private String url = "http://192.168.8.30:9981/api/manager/myMessage";
+    private String uploadImg = "http://192.168.8.30:9981/api/upload/avatar";
 
     @Override
     public void bindListener() {
@@ -161,6 +170,26 @@ public class GerenxinxiActivity extends BaseActivity implements View.OnClickList
                     if (!TextUtils.isEmpty(filePath)) {
                         Log.d("Lujing--", filePath);
                         touxiangImg.setImageURI("file://" + filePath);
+                        try {
+                            FileInputStream in = new FileInputStream("file://" + filePath);
+                            Bitmap bitmap= BitmapFactory.decodeStream(in);
+                            Bitmap bm=BitmapFactory.decodeFile("file://" + filePath);
+                            //TODO
+                            uploadImg(uploadImg, bm, new ResponseListener() {
+                                @Override
+                                public void onResponse(String response) {
+                                    Log.d("上传", "成功！");
+                                }
+
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.d("上传", "失败！");
+
+                                }
+                            });
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
 

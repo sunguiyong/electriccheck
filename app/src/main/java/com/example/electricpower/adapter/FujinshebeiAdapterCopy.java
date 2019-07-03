@@ -28,6 +28,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+import static com.example.electricpower.entity.to.DeviceInfo.check;
+
 public class FujinshebeiAdapterCopy extends BaseAdapter {
     int x = R.layout.item_fujinshebei;
     private Context context;
@@ -38,6 +40,25 @@ public class FujinshebeiAdapterCopy extends BaseAdapter {
     private ArrayList<BluetoothDevice> mLeDevices;
     private ArrayList<Integer> RSSIs;
     private ArrayList<String> scanRecords;
+    private String address;
+    private ArrayList<Double> saveData;
+    private Context mContext;
+
+    public ArrayList<Double> getSaveData() {
+        return saveData;
+    }
+
+    public void setSaveData(ArrayList<Double> saveData) {
+        this.saveData = saveData;
+    }
+
+    public ArrayList<String> getScanRecords() {
+        return scanRecords;
+    }
+
+    public void setScanRecords(ArrayList<String> scanRecords) {
+        this.scanRecords = scanRecords;
+    }
 
     public FujinshebeiAdapterCopy(Context context) {
         mLeDevices = new ArrayList<BluetoothDevice>();
@@ -76,7 +97,6 @@ public class FujinshebeiAdapterCopy extends BaseAdapter {
     }
 
     public BluetoothDevice getDevice(int position) {
-        // TODO Auto-generated method stub
         return mLeDevices.get(position);
     }
 
@@ -112,43 +132,84 @@ public class FujinshebeiAdapterCopy extends BaseAdapter {
 //        } else {
 //            viewHolder.name.setText("未知设备");
 //        }
-        viewHolder.name.setText(mLeDevices.get(position).getAddress());
-        Log.d("适配器NAME", mLeDevices.get(position).getName() + "===" + mLeDevices.get(position).getAddress());
+        address = mLeDevices.get(position).getAddress();
+        DeviceInfo.mac = address;
+        String address1 = address.replaceAll(":", "");
+        String addressLast = address1.substring(0, 6);
 
+        viewHolder.name.setText("YG-" + addressLast);
+        DeviceInfo.deviceName = "YG-" + addressLast;
+        Log.d("适配器NAME", mLeDevices.get(position).getName() + "===" + mLeDevices.get(position).getAddress());
 
         viewHolder.shebeiState.setText(RSSIs.get(position).toString() + "");
 
         //获取到蓝牙广播数据进行处理
         String temp = scanRecords.get(position).toString();
+        Log.d("positionMy", position + "");
+        String check = temp.substring(22, 23);
+        Log.d("checkMy", check);
         String wendu16 = temp.substring(22, 26);
         String shidu16 = temp.substring(26, 30);
+
         //转16进制
         String wendu = new BigInteger(wendu16, 16).toString();
         String shidu = new BigInteger(shidu16, 16).toString();
-        double wenduLast = Double.parseDouble(wendu) / 100;
-        double shiduLast = Double.parseDouble(shidu) / 100;
+        double wenduLast = hexToInt(wendu16) / 100d;
+        double shiduLast = hexToInt(shidu16) / 100d;
+//        final double wenduLast = Double.parseDouble(wendu) / 100;
+//        final double shiduLast = Double.parseDouble(shidu) / 100;
         Log.d("温湿度", wenduLast + "----" + shiduLast);
-
-        viewHolder.shidu.setText("湿度：" + shiduLast + "");
-        viewHolder.mac.setText("温度：" + wenduLast + "");
-        DeviceInfo.temperature=wenduLast;
-        DeviceInfo.humidity=shiduLast;
-
-//        convertView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.d("onclick","执行");
-//                Intent intent=new Intent(,ChartTest.class);
-//                intent.putExtra("name",mLeDevices.get(position).getName());
-//                context.startActivity(intent);
-//            }
-//        });
+//        if (check.equals("F")) {
+        viewHolder.shidu.setText("湿度：" + shiduLast + "%");
+        viewHolder.mac.setText("温度：" + wenduLast + "℃");
+//            DeviceInfo.temperature = wenduLast;
+//            DeviceInfo.humidity = shiduLast;
+//        }
+//        if (!check.equals("F")) {
+//            DeviceInfo.check = false;
+//            viewHolder.shidu.setText("湿度：" + shiduLast + "%");
+//            viewHolder.mac.setText("温度：" + wenduLast + "℃");
+//            DeviceInfo.temperature = wenduLast;
+//            DeviceInfo.humidity = shiduLast;
+//        }
 
         return convertView;
     }
 
+    public void checkScanResult(ArrayList<String> scanRecords, int position) {
+        //获取到蓝牙广播数据进行处理
+        String bleResult = scanRecords.get(position).toString();
+        Log.d("positionMy", position + "");
+        String check = bleResult.substring(22, 23);
+        Log.d("checkMy", check);
+        String wendu16 = bleResult.substring(22, 26);
+        String shidu16 = bleResult.substring(26, 30);
+
+        //转16进制
+        String wendu = new BigInteger(wendu16, 16).toString();
+        String shidu = new BigInteger(shidu16, 16).toString();
+
+        double wenduLast = hexToInt(wendu16) / 100d;
+        double shiduLast = hexToInt(shidu16) / 100d;
+        DeviceInfo.temperature = wenduLast;
+        DeviceInfo.humidity = shiduLast;
+    }
+
+    public double hexToInt(String hexString) {
+        String flag = hexString.substring(0, 1);
+        if ("F".equals(flag)) {
+            BigInteger bi = new BigInteger("FFFF" + hexString, 16);
+            Integer a = bi.intValue();
+            Double value = Double.parseDouble(a.toString());
+            return value;
+        } else {
+            Integer tmp = Integer.parseInt(hexString, 16);
+            Double value = Double.parseDouble(tmp.toString());
+            return value;
+        }
+    }
+
     public void clear() {
-        // TODO Auto-generated method stub
         mLeDevices.clear();
         RSSIs.clear();
         scanRecords.clear();

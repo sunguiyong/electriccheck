@@ -2,6 +2,7 @@ package com.example.electricpower.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,13 +53,13 @@ public class DeviceAdapter extends ArrayAdapter<DeviceGet.ResultBean> {
         viewHolder.name.setText(resultBean.getDeviceName() + "");
         viewHolder.shebeiState.setText(resultBean.getALiYunDeviceState() + "");
         if (resultBean.getStoreData().get(0) != null) {
-            viewHolder.shiduTv.setText("湿度：" + (double) Math.round((resultBean.getStoreData().get(0).getNewData() / 1000d) * 100) / 100 + "");
+            viewHolder.shiduTv.setText("湿度：" + (double) Math.round((resultBean.getStoreData().get(0).getNewData()) * 100) / 100 + "");
         } else {
             viewHolder.shiduTv.setText("--");
         }
 
         if (resultBean.getStoreData().get(1) != null) {
-            viewHolder.wenduTv.setText("温度：" + (double) Math.round((resultBean.getStoreData().get(1).getNewData() / 1000d) * 100) / 100 + "");
+            viewHolder.wenduTv.setText("温度：" + (double) Math.round((resultBean.getStoreData().get(1).getNewData()) * 100) / 100 + "");
 
         } else {
             viewHolder.wenduTv.setText("--");
@@ -73,9 +74,10 @@ public class DeviceAdapter extends ArrayAdapter<DeviceGet.ResultBean> {
 
                 if (resultBean.getStoreData().get(0) != null && resultBean.getStoreData().get(1) != null) {
                     //湿度
-                    DeviceInfo.humidity = (double) Math.round((resultBean.getStoreData().get(0).getNewData() / 1000d) * 100) / 100;
+                    DeviceInfo.humidity = (double) Math.round((resultBean.getStoreData().get(0).getNewData()) * 100) / 100;
                     intent.putExtra("humidity_nodeid", resultBean.getStoreData().get(0).getNodeId() + "");
-                    DeviceInfo.temperature = (double) Math.round((resultBean.getStoreData().get(1).getNewData() / 1000d) * 100) / 100;
+                    //温度
+                    DeviceInfo.temperature = (double) Math.round((resultBean.getStoreData().get(1).getNewData()) * 100) / 100;
                     intent.putExtra("temperature_nodeid", resultBean.getStoreData().get(1).getNodeId() + "");
 
                     Log.d("humidityTem_nodeid", resultBean.getStoreData().get(0).getNodeId() + "---" + resultBean.getStoreData().get(1).getNodeId() + "");
@@ -88,34 +90,34 @@ public class DeviceAdapter extends ArrayAdapter<DeviceGet.ResultBean> {
                         long time = date.getTime();
 
 
-                        SaveData.url = urlToday = "http://192.168.8.30:9981/api/device/historyData?"
-                                + "deviceNodeIdW="
-                                + resultBean.getStoreData().get(1).getNodeId() + ""
-                                + "&deviceNodeIdS="
-                                + resultBean.getStoreData().get(0).getNodeId() + ""
-                                + "&dateTime="
-                                + time + ""
-                                + "&deviceId="
-                                + resultBean.getNodeList().get(0).getSdevId() + "";
-                        Log.d("urlTest", urlToday);
-                        SaveData.baseUrl="http://192.168.8.30:9981/api/device/historyData?"
-                                + "deviceNodeIdW="
-                                + resultBean.getStoreData().get(1).getNodeId() + ""
-                                + "&deviceNodeIdS="
-                                + resultBean.getStoreData().get(0).getNodeId() + ""
-                                + "&deviceId="
-                                + resultBean.getNodeList().get(0).getSdevId() + "";
-
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    getContext().startActivity(intent);
                 } else {
                     DeviceInfo.humidity = 0;
                     DeviceInfo.temperature = 0;
                     Toast.makeText(getContext(), "当前无温湿度数据", Toast.LENGTH_SHORT).show();
                 }
-//                getDataThis(resultBeans.get(position).getDeviceId());
+                SaveData.url = urlToday = "http://192.168.8.30:9981/api/device/historyData?"
+                        + "deviceNodeIdW="
+                        + resultBean.getNodeList().get(1).getSdevNodeid() + ""
+                        + "&deviceNodeIdS="
+                        + resultBean.getNodeList().get(0).getSdevNodeid() + ""
+                        + "&dateTime="
+//                                + time + ""
+//                        + "1561302000000"
+                        + System.currentTimeMillis() + ""
+                        + "&deviceId="
+                        + resultBean.getNodeList().get(0).getSdevId() + "";
+                Log.d("urlTest", urlToday);
+                SaveData.baseUrl = "http://192.168.8.30:9981/api/device/historyData?"
+                        + "deviceNodeIdW="
+                        + resultBean.getNodeList().get(1).getSdevNodeid() + ""
+                        + "&deviceNodeIdS="
+                        + resultBean.getNodeList().get(0).getSdevNodeid() + ""
+                        + "&deviceId="
+                        + resultBean.getNodeList().get(0).getSdevId() + "";
+                getContext().startActivity(intent);
 
             }
         });

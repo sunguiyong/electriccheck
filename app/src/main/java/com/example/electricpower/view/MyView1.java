@@ -90,7 +90,11 @@ public class MyView1 extends View {
         //画水银柱矩形背景
         canvas.drawRect(viewWidth / 2 - 45f, getHeight() - 150f, viewWidth / 2 + 45f, 95f, paint4);
         //画水银柱矩形
-        canvas.drawRect(viewWidth / 2 - 40f, getHeight() - 150f, viewWidth / 2 + 40f, ((getHeight() - 300f) / 100f) * (100f - temperature) + 100f, paint2);
+        canvas.drawRect(viewWidth / 2 - 40f,
+                getHeight() - 150f,
+                viewWidth / 2 + 40f,
+                ((getHeight() - 300f) / 100f) * (80f - temperature) + 100f, //水银柱高度计算
+                paint2);
         //画刻度线
 //        canvas.drawLine(getWidth() / 2 + 150f,
 //                getHeight() - 150f, getWidth() - 350f, getHeight() - 150f, paint3);
@@ -134,25 +138,42 @@ public class MyView1 extends View {
         /**
          * 画刻度值
          */
-        for (int i = 0; i < 6; i++) {
+//        for (int i = 0; i < 6; i++) {
+//            canvas.drawText(i * (-20) + "",
+//                    getWidth() / 2 + 130f,
+//                    getHeight() - 190f - i * big,
+//                    paint3);
+////            canvas.drawText(i * 20 + "",
+////                    getWidth() / 2 + 130f,
+////                    getHeight() - 190f - i * big,
+////                    paint3);
+//        }
+        for (int i = -1; i <= 0; i++) {
             canvas.drawText(i * 20 + "",
                     getWidth() / 2 + 130f,
-                    getHeight() - 190f - i * big,
+                    getHeight() - 280f - i * big,
                     paint3);
         }
 
+        for (int i = 0; i < 5; i++) {
+            canvas.drawText(i * 20 + "",
+                    getWidth() / 2 + 130f,
+                    getHeight() - 280f - (i * big),
+                    paint3);
+        }
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.wendu_bg);
         Rect src, dst;
         src = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
         dst = new Rect(0, 0, bitmap.getWidth() / 6, bitmap.getHeight() / 6);
         dst.left = 20;
-        dst.top = getHeight()/2-60;
-        dst.bottom=getHeight()/2+60;
-        dst.right=getWidth()/2-80;
+        dst.top = getHeight() / 2 - 60;
+        dst.bottom = getHeight() / 2 + 60;
+        dst.right = getWidth() / 2 - 80;
 
         canvas.drawBitmap(bitmap, src, dst, null);
 
-        canvas.drawText((int)temperature+"℃",100,getHeight()/2+15,paint);
+
+        canvas.drawText((int) temperature + "℃", 100, getHeight() / 2 + 15, paint);
 
     }
 }

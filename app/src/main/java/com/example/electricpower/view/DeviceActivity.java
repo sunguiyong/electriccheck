@@ -17,6 +17,7 @@ import com.example.electricpower.BaseActivity;
 import com.example.electricpower.R;
 import com.example.electricpower.adapter.DeviceAdapter;
 import com.example.electricpower.entity.to.DeviceInfo;
+import com.example.electricpower.entity.to.SaveData;
 import com.example.electricpower.entity.to.deviceall.DeviceGet;
 import com.example.electricpower.entity.to.deviceall.DevicePost;
 import com.example.electricpower.entity.to.wenshidu.WenShiGet;
@@ -86,7 +87,8 @@ public class DeviceActivity extends BaseActivity implements View.OnClickListener
 
     private void getData() {
         DevicePost devicePost = new DevicePost();
-        devicePost.setId(getIntent().getStringExtra("buildId"));
+//        devicePost.setId(getIntent().getStringExtra("buildId"));
+        devicePost.setId(SaveData.deviceId);
         Gson gson = new Gson();
         String str = gson.toJson(devicePost);
         JsonObject jsonObject = new JsonParser().parse(str).getAsJsonObject();
@@ -97,8 +99,6 @@ public class DeviceActivity extends BaseActivity implements View.OnClickListener
                 DeviceAdapter deviceAdapter = new DeviceAdapter(mContext, R.layout.item_deviceall, response.getResult());
                 listFujinshebeiliebiao.setAdapter(deviceAdapter);
                 resultBeans = response.getResult();
-
-
                 Log.d("成功", "成功");
             }
         }, new Response.ErrorListener() {
@@ -115,7 +115,7 @@ public class DeviceActivity extends BaseActivity implements View.OnClickListener
             public void onResponse(WenShiGet response) {
                 Log.d("GET请求", "成功");
                 if (!response.getResult().getEvent().isEmpty()) {
-                    Log.d("不为空执行","不为空执行此方法");
+                    Log.d("不为空执行", "不为空执行此方法");
                     WenShiGet.ResultBean.DeviceBean deviceBean = response.getResult().getDevice();
                     List<WenShiGet.ResultBean.NodesBean> nodesBeans = response.getResult().getNodes();
                     List<WenShiGet.ResultBean.EventBean> eventBeans = response.getResult().getEvent();
@@ -154,7 +154,7 @@ public class DeviceActivity extends BaseActivity implements View.OnClickListener
                     DeviceInfo.temperature = tempureNodeValue / 100;
                     DeviceInfo.humidity = humidityNodeValue / 100;
                     Log.d("当前温湿度：", tempureNodeValue + "---" + humidityNodeValue);
-                }else {
+                } else {
                     showToast("Event为空！！！");
                 }
             }

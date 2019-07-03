@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <LinearLayout
@@ -41,7 +42,7 @@
                 android:src="@drawable/icon_zhanghao" />
 
             <EditText
-                android:text="17701540105"
+                tools:text="13775452153"
                 android:id="@+id/zhanghao_tv"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -75,7 +76,7 @@
                 android:src="@drawable/icon_mima" />
 
             <EditText
-                android:text="111222"
+                tools:text="111222"
                 android:id="@+id/mima_tv"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

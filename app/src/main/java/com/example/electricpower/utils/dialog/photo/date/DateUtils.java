@@ -7,12 +7,16 @@ import java.util.Date;
  * 时间戳转化为日期
  */
 public class DateUtils {
-    public static String stamp2time(String stamp) {
-        String sd="";
-        Date d = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        sd=sdf.format(new Date(Long.parseLong(stamp)));
-        return null;
+    /*
+     * 将时间戳转换为时间
+     */
+    public static String stampToDate(String s) {
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long lt = new Long(s);
+        Date date = new Date(lt);
+        res = simpleDateFormat.format(date);
+        return res;
     }
 
 }

@@ -14,6 +14,7 @@ import com.android.volley.VolleyError;
 import com.example.electricpower.BaseFragment;
 import com.example.electricpower.R;
 import com.example.electricpower.adapter.JZAdapter;
+import com.example.electricpower.entity.to.SaveData;
 import com.example.electricpower.entity.to.buildlist.BuildReceived;
 import com.example.electricpower.entity.to.listviewEntity.Jianzhuliebiao;
 
@@ -62,15 +63,18 @@ public class ShebeiFragment extends BaseFragment {
             @Override
             public void onResponse(final BuildReceived response) {
                 Log.d("建筑列表", "成功");
-                if (response.getStatus()==200){
-                    JZAdapter jzAdapter = new JZAdapter(getActivity(), R.layout.item_jianzhuliebiao,response.getResult());
+                if (response.getStatus() == 200 && response.getResult() != null) {
+                    JZAdapter jzAdapter = new JZAdapter(getActivity(), R.layout.item_jianzhuliebiao, response.getResult());
                     listJianzhuliebiao.setAdapter(jzAdapter);
                     listJianzhuliebiao.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            Intent intent=new Intent(getActivity(),DeviceActivity.class);
-                            intent.putExtra("buildname",response.getResult().get(position).getBuildName());
-                            intent.putExtra("buildId",response.getResult().get(position).getId()+"");
+                            Intent intent = new Intent(getActivity(), DeviceActivity.class);
+                            intent.putExtra("buildname", response.getResult().get(position).getBuildName());
+                            if (!response.getResult().isEmpty()) {
+//                                intent.putExtra("buildId", response.getResult().get(position).getId() + "");
+                                SaveData.deviceId=response.getResult().get(position).getId();
+                            }
                             startActivity(intent);
                         }
                     });

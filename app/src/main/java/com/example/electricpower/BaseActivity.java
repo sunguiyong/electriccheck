@@ -140,6 +140,12 @@ public abstract class BaseActivity extends AppCompatActivity implements InitView
         Request request = new PostUploadRequest(url, imageList, listener);
         executeRequest(request);
     }
+    public void uploadImg(String url,String path,ResponseListener listener){
+        List<FormImage> imageList = new ArrayList<FormImage>();
+        imageList.add(new FormImage(path));
+        Request request = new PostUploadRequest(url, imageList, listener);
+        executeRequest(request);
+    }
 
     protected void executeRequest(Request<?> request) {
         request.setTag(this);

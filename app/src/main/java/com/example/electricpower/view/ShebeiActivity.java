@@ -78,15 +78,18 @@ public class ShebeiActivity extends BaseActivity implements View.OnClickListener
             }
             case R.id.search_tv: {
                 if (isChoose) {
-                    listT.clear();
-                    listH.clear();
-                    list.clear();
+                    if (list != null) {
+                        listT.clear();
+                        listH.clear();
+                        list.clear();
+                    }
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     try {
                         Date date = simpleDateFormat.parse(dateChoose);
                         long time = date.getTime();
                         String url = SaveData.baseUrl
                                 + "&dateTime="
+//                                + "1561302000000"
                                 + time + "";
                         Log.d("desc", "---" + url);
                         getDataThis(url);
@@ -153,9 +156,11 @@ public class ShebeiActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void onPause() {
         super.onPause();
-        list.clear();
-        listH.clear();
-        listT.clear();
+        if (list != null) {
+            list.clear();
+            listH.clear();
+            listT.clear();
+        }
     }
 
     @Override
@@ -223,7 +228,7 @@ public class ShebeiActivity extends BaseActivity implements View.OnClickListener
         //1.设置x轴和y轴的点
         List<Entry> entries = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            entries.add(new Entry(i, (float) listT.get(i).getNew_data() / 1000f));
+            entries.add(new Entry(i, (float) listT.get(i).getNew_data()));
         }
         LineDataSet dataSet = new LineDataSet(entries, "");
         dataSet.setDrawFilled(true);
@@ -289,7 +294,7 @@ public class ShebeiActivity extends BaseActivity implements View.OnClickListener
         //1.设置x轴和y轴的点
         List<Entry> entries = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            entries.add(new Entry(i, (float) listH.get(i).getNew_data() / 1000f));
+            entries.add(new Entry(i, (float) listH.get(i).getNew_data()));
         }
         LineDataSet dataSet = new LineDataSet(entries, "");
         dataSet.setDrawFilled(true);

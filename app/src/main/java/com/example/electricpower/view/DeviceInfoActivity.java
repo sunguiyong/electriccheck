@@ -59,6 +59,7 @@ public class DeviceInfoActivity extends BaseActivity implements View.OnClickList
     private List<MPToday.ResultBean> list;
     List<MPToday.ResultBean> listT = new ArrayList<>();
     List<MPToday.ResultBean> listH = new ArrayList<>();
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -146,7 +147,7 @@ public class DeviceInfoActivity extends BaseActivity implements View.OnClickList
         //x轴
         XAxis xAxis = mLineChart.getXAxis();
         xAxis.setAxisMinimum(0);
-        xAxis.setAxisMaximum(xSize-1);
+        xAxis.setAxisMaximum(xSize - 1);
         xAxis.setLabelCount(11);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);//x轴位置
         xAxis.setDrawGridLines(false);//x轴方向的背景线
@@ -165,7 +166,7 @@ public class DeviceInfoActivity extends BaseActivity implements View.OnClickList
         //1.设置x轴和y轴的点
         List<Entry> entries = new ArrayList<>();
         for (int i = 0; i < xSize; i++) {
-            entries.add(new Entry(i, (float) listT.get(i).getNew_data() / 1000f));
+            entries.add(new Entry(i, (float) listT.get(i).getNew_data()));
         }
         LineDataSet dataSet = new LineDataSet(entries, "");
         dataSet.setDrawFilled(true);
@@ -235,7 +236,7 @@ public class DeviceInfoActivity extends BaseActivity implements View.OnClickList
         List<Entry> entries = new ArrayList<>();
         for (int i = 0; i < xSize; i++) {
 //            entries.add(new Entry(i, new Random().nextInt(80)));
-            entries.add(new Entry(i, (float) listH.get(i).getNew_data() / 1000f));
+            entries.add(new Entry(i, (float) listH.get(i).getNew_data()));
 
         }
         LineDataSet dataSet = new LineDataSet(entries, "");
@@ -267,9 +268,11 @@ public class DeviceInfoActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onPause() {
         super.onPause();
-        list.clear();
-        listH.clear();
-        listT.clear();
+        if (list != null) {
+            list.clear();
+            listH.clear();
+            listT.clear();
+        }
     }
 
     private void getDataThis() {

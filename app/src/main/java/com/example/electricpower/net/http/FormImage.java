@@ -20,11 +20,14 @@ public class FormImage {
     private String mMime;
     //需要上传的图片资源，因为这里测试为了方便起见，直接把 bigmap 传进来，真正在项目中一般不会这般做，而是把图片的路径传过来，在这里对图片进行二进制转换
     private Bitmap mBitmap;
+    private String path;
 
     public FormImage(Bitmap mBitmap) {
         this.mBitmap = mBitmap;
     }
-
+    public FormImage(String path){
+        this.path=path;
+    }
     public String getName() {
 //        return mName;
 //测试，把参数名称写死
