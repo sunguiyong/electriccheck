@@ -272,9 +272,14 @@ public class ChartTest extends BaseActivity implements View.OnClickListener, OnC
         String mac2 = mac1.substring(0, 6);
         String mac3 = mac1.substring(6, 12);
         String s = mac3 + mac2;
-        Log.d("stringMac", mac3 + mac2);
+        String s1 = s.substring(6, 8);
+        String s2 = s.substring(10, 12);
+        StringBuilder sb = new StringBuilder(s);
+        sb.replace(6, 8, s2);
+        sb.replace(10, 12, s1);
+        Log.d("stringMac", sb.toString());
 
-        blePostMac.setMac(s);
+        blePostMac.setMac(sb.toString());
         String str = gson.toJson(blePostMac);
         JsonObject jsonObject = new JsonParser().parse(str).getAsJsonObject();
 

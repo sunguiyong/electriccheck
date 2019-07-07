@@ -20,17 +20,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.cjj.MaterialRefreshLayout;
-import com.cjj.MaterialRefreshListener;
 import com.clj.fastble.BleManager;
 import com.example.electricpower.BaseActivity;
 import com.example.electricpower.R;
 import com.example.electricpower.adapter.FujinshebeiAdapterCopy;
-import com.example.electricpower.entity.to.DeviceInfo;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import butterknife.Bind;
 

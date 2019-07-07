@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -53,7 +54,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     TextView zhucezhanghaoTv;
 
 
-    String url = "http://192.168.8.30:9981/api/manager/login";
+    String url = "http://118.31.229.187:9981/api/manager/login";
     @Bind(R.id.version_tv)
     TextView versionTv;
     private boolean eye = false;
@@ -126,6 +127,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         loginPost.setMobile(zhanghaoTv.getText().toString());
         loginPost.setPassword(mimaTv.getText().toString());
         String jsonStr = gson.toJson(loginPost);
+        Log.d("登录json", jsonStr);
         JsonObject jsonObject = new JsonParser().parse(jsonStr).getAsJsonObject();
         getDataFromServer(Request.Method.POST, url, jsonObject, LoginReceived.class, new Response.Listener<LoginReceived>() {
             @Override
@@ -145,7 +147,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("请求", "失败");
-
+                error.printStackTrace();
             }
         });
     }

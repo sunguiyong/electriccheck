@@ -2,7 +2,6 @@ package com.example.electricpower.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +20,7 @@ import com.example.electricpower.view.DeviceInfoActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,9 +31,40 @@ public class DeviceAdapter extends ArrayAdapter<DeviceGet.ResultBean> {
     int x = R.layout.item_deviceall;
     private String urlToday;
     private int resourId;
+    private List<DeviceGet.ResultBean> list = new ArrayList<>();
+
+    public List<DeviceGet.ResultBean> getList() {
+        return list;
+    }
+
+    public void setList(List<DeviceGet.ResultBean> list) {
+        this.list = list;
+    }
+
+    public void addLists(int position,List<DeviceGet.ResultBean> list){
+        if (list!=null&&list.size()>0){
+            this.list.addAll(list);
+            notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public int getCount() {
+        if (list!=null){
+            return list.size();
+        }else {
+            return 0;
+        }
+    }
+
+    @Override
+    public DeviceGet.ResultBean getItem(int position) {
+        return list.get(position);
+    }
 
     public DeviceAdapter(Context context, int resource, List<DeviceGet.ResultBean> objects) {
         super(context, resource, objects);
+        this.list = objects;
         resourId = resource;
     }
 
@@ -43,12 +74,13 @@ public class DeviceAdapter extends ArrayAdapter<DeviceGet.ResultBean> {
         View view;
         ViewHolder viewHolder;
         if (convertView == null) {
-            view = LayoutInflater.from(getContext()).inflate(resourId, parent, false);
-            viewHolder = new ViewHolder(view);
-            view.setTag(viewHolder);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_deviceall, parent, false);
+            viewHolder = new ViewHolder(convertView);
+            convertView.setTag(viewHolder);
         } else {
-            view = convertView;
-            viewHolder = (ViewHolder) view.getTag();
+//            view = convertView;
+//            viewHolder = (ViewHolder) view.getTag();
+            viewHolder = (ViewHolder) convertView.getTag();
         }
         viewHolder.name.setText(resultBean.getDeviceName() + "");
         viewHolder.shebeiState.setText(resultBean.getALiYunDeviceState() + "");
@@ -64,7 +96,7 @@ public class DeviceAdapter extends ArrayAdapter<DeviceGet.ResultBean> {
         } else {
             viewHolder.wenduTv.setText("--");
         }
-        view.setOnClickListener(new View.OnClickListener() {
+        convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), DeviceInfoActivity.class);
@@ -98,7 +130,7 @@ public class DeviceAdapter extends ArrayAdapter<DeviceGet.ResultBean> {
                     DeviceInfo.temperature = 0;
                     Toast.makeText(getContext(), "当前无温湿度数据", Toast.LENGTH_SHORT).show();
                 }
-                SaveData.url = urlToday = "http://192.168.8.30:9981/api/device/historyData?"
+                SaveData.url = urlToday = SaveData.mainUrl + "device/historyData?"
                         + "deviceNodeIdW="
                         + resultBean.getNodeList().get(1).getSdevNodeid() + ""
                         + "&deviceNodeIdS="
@@ -110,7 +142,7 @@ public class DeviceAdapter extends ArrayAdapter<DeviceGet.ResultBean> {
                         + "&deviceId="
                         + resultBean.getNodeList().get(0).getSdevId() + "";
                 Log.d("urlTest", urlToday);
-                SaveData.baseUrl = "http://192.168.8.30:9981/api/device/historyData?"
+                SaveData.baseUrl = SaveData.mainUrl + "device/historyData?"
                         + "deviceNodeIdW="
                         + resultBean.getNodeList().get(1).getSdevNodeid() + ""
                         + "&deviceNodeIdS="
@@ -121,7 +153,7 @@ public class DeviceAdapter extends ArrayAdapter<DeviceGet.ResultBean> {
 
             }
         });
-        return view;
+        return convertView;
     }
 
 

@@ -33,7 +33,7 @@ import butterknife.ButterKnife;
 
 public class WangjimimaActivity extends BaseActivity implements View.OnClickListener {
     int x = R.layout.activity_wangjimima;
-    private String url = "http://192.168.8.30:9981/api/sms/sendSmsInfo";
+    private String url = "http://118.31.229.187:9981/api/sms/sendSmsInfo";
     private String registerUrl = SaveData.mainUrl + "manager/forgetPwd";
 
     @Bind(R.id.back_img)

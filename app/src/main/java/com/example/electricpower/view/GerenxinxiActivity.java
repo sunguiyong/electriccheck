@@ -78,8 +78,8 @@ public class GerenxinxiActivity extends BaseActivity implements View.OnClickList
     @Bind(R.id.nick)
     TextView nick;
     private String imgUri = "http://www.desktx.com/d/file/wallpaper/meishi/20170711/a4342d8eec03e0fa463f00b4f1bbfa39.jpg";
-    private String url = "http://192.168.8.30:9981/api/manager/myMessage";
-    private String uploadImg = "http://192.168.8.30:9981/api/upload/avatar";
+    private String url = "http://118.31.229.187:9981/api/manager/myMessage";
+    private String uploadImg = "http://118.31.229.187:9981/api/upload/avatar";
 
     @Override
     public void bindListener() {

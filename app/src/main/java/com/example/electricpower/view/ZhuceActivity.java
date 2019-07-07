@@ -39,7 +39,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class ZhuceActivity extends BaseActivity implements View.OnClickListener {
-    private String url = "http://192.168.8.30:9981/api/sms/sendSmsInfo";
+    private String url = "http://118.31.229.187:9981/api/sms/sendSmsInfo";
     private String registerUrl = SaveData.mainUrl + "manager/register";
     private String resultSave;
     int x = R.layout.activity_zhuce;

@@ -30,7 +30,7 @@ public class NichengActivity extends BaseActivity implements View.OnClickListene
     EditText nicheng;
     @Bind(R.id.define)
     TextView define;
-    private String url="http://192.168.8.30:9981/api/manager/updateNick";
+    private String url="http://118.31.229.187:9981/api/manager/updateNick";
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

@@ -7,5 +7,5 @@ public class SaveData {
     public static String url;
     public static String baseUrl;
     public static String deviceId;
-    public static final String mainUrl="http://192.168.8.30:9981/api/";
+    public static final String mainUrl="http://118.31.229.187:9981/api/";
 }

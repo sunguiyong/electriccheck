@@ -29,7 +29,7 @@ public class ShebeiFragment extends BaseFragment {
     @Bind(R.id.list_jianzhuliebiao)
     ListView listJianzhuliebiao;
     private List<BuildReceived.ResultBean> list = new ArrayList<>();
-    private String url = "http://192.168.8.30:9981/api/build/buildAll";
+    private String url = "http://118.31.229.187:9981/api/build/buildAll";
 
     private void initJianzhuliebiao() {
 //        for (int i = 0; i < 2; i++) {

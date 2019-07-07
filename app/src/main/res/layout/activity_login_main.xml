@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <LinearLayout
-        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
         android:background="@color/gray"
-        android:layout_width="match_parent"
-        android:layout_height="300dp">
-    <ImageView
-        android:scaleType="centerInside"
-        android:src="@drawable/logo_yuanguan"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:src="@drawable/logo_yuanguan" />
         <!--<ImageView-->
-            <!--android:layout_width="250dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:adjustViewBounds="true"-->
-            <!--android:src="@drawable/yuanguan_logo" />-->
+        <!--android:layout_width="250dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:adjustViewBounds="true"-->
+        <!--android:src="@drawable/yuanguan_logo" />-->
     </LinearLayout>
 
 
@@ -42,7 +43,6 @@
                 android:src="@drawable/icon_zhanghao" />
 
             <EditText
-                tools:text="13775452153"
                 android:id="@+id/zhanghao_tv"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -54,13 +54,14 @@
                 android:maxLines="1"
                 android:paddingLeft="15dp"
                 android:singleLine="true"
+                android:text="13775452154"
                 android:textSize="18sp" />
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/gray"/>
+            android:background="@color/gray" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -76,7 +77,6 @@
                 android:src="@drawable/icon_mima" />
 
             <EditText
-                tools:text="111222"
                 android:id="@+id/mima_tv"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -86,6 +86,7 @@
                 android:background="@null"
                 android:hint="密码"
                 android:inputType="textPassword"
+                android:text="123456"
                 android:textSize="18sp" />
 
             <ImageView
@@ -116,40 +117,43 @@
             android:textSize="18sp" />
 
         <TextView
-            android:layout_gravity="center"
             android:id="@+id/fujinshebei_tv"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
+            android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:textColor="@color/green_near"
             android:gravity="center"
             android:text="附近设备"
+            android:textColor="@color/green_near"
             android:textSize="18sp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="30dp">
+
             <TextView
                 android:id="@+id/wangjimima_tv"
-                android:gravity="center_vertical"
-                android:layout_toLeftOf="@+id/shuxian"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="忘记密码?"/>
+                android:layout_toLeftOf="@+id/shuxian"
+                android:gravity="center_vertical"
+                android:text="忘记密码?" />
+
             <TextView
                 android:id="@+id/shuxian"
-                android:layout_centerHorizontal="true"
-                android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="丨"/>
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="丨" />
+
             <TextView
                 android:id="@+id/zhucezhanghao_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_toRightOf="@id/shuxian"
                 android:gravity="center_vertical"
-                android:text="注册账号"
-                android:layout_toRightOf="@id/shuxian"/>
+                android:text="注册账号" />
         </RelativeLayout>
 
         <RelativeLayout

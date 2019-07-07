@@ -48,7 +48,7 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/name_main"
             android:orientation="vertical"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
                 android:gravity="bottom"
@@ -59,7 +59,7 @@
                 android:textColor="@color/black"
                 android:layout_weight="1"
                 android:layout_alignParentRight="true"
-                android:text="温度：50℃"/>
+                android:text="温度：28.3℃"/>
             <TextView
 
                 android:textColor="@color/black"
@@ -70,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="湿度：65±2%rh"/>
+                android:text="湿度：62.5%"/>
         </LinearLayout>
         <ImageView
             android:id="@+id/right_img"

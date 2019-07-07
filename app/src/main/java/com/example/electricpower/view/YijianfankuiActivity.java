@@ -36,7 +36,7 @@ public class YijianfankuiActivity extends BaseActivity implements View.OnClickLi
     Button tijiaoBt;
     @Bind(R.id.phoneormail_et)
     EditText phoneormailEt;
-    private String url = "http://192.168.8.30:9981/api/feedback/addFeedback";
+    private String url = "http://118.31.229.187:9981/api/feedback/addFeedback";
 
     @Override
     public void bindListener() {

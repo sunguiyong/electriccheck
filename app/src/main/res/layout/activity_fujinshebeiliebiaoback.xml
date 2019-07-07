@@ -15,17 +15,16 @@
         android:paddingLeft="10dp"
         android:text="设备列表" />
 
-    <!--<com.cjj.MaterialRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-        <!--android:id="@+id/refresh"-->
-        <!--android:background="@color/gray"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
+    <com.cjj.MaterialRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray">
 
         <ListView
-            android:dividerHeight="1px"
             android:id="@+id/list_fujinshebeiliebiao"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    <!--</com.cjj.MaterialRefreshLayout>-->
+            android:layout_height="match_parent"
+            android:dividerHeight="1px" />
+    </com.cjj.MaterialRefreshLayout>
 </LinearLayout>

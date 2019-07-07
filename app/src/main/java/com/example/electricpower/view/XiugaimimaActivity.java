@@ -38,7 +38,7 @@ public class XiugaimimaActivity extends BaseActivity implements View.OnClickList
     @Bind(R.id.define)
     Button define;
 
-    private String url="http://192.168.8.30:9981/api/manager/updatePassword";
+    private String url="http://118.31.229.187:9981/api/manager/updatePassword";
     @Override
     public void bindListener() {
         define.setOnClickListener(this);

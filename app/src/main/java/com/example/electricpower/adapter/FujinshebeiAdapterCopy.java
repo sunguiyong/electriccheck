@@ -132,6 +132,7 @@ public class FujinshebeiAdapterCopy extends BaseAdapter {
 //        } else {
 //            viewHolder.name.setText("未知设备");
 //        }
+        //蓝牙mac地址处理
         address = mLeDevices.get(position).getAddress();
         DeviceInfo.mac = address;
         String address1 = address.replaceAll(":", "");

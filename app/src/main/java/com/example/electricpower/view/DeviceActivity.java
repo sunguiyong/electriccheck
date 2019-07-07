@@ -1,11 +1,8 @@
 package com.example.electricpower.view;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -13,6 +10,8 @@ import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.cjj.MaterialRefreshLayout;
+import com.cjj.MaterialRefreshListener;
 import com.example.electricpower.BaseActivity;
 import com.example.electricpower.R;
 import com.example.electricpower.adapter.DeviceAdapter;
@@ -25,11 +24,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 public class DeviceActivity extends BaseActivity implements View.OnClickListener {
     int x = R.layout.activity_fujinshebeiliebiaoback;
@@ -43,10 +42,16 @@ public class DeviceActivity extends BaseActivity implements View.OnClickListener
     TextView searchstateTv;
     @Bind(R.id.list_fujinshebeiliebiao)
     ListView listFujinshebeiliebiao;
-    String url = "http://192.168.8.30:9981/api/device/deviceAll";
-    private String urlThis = "http://192.168.8.30:9981/api/device/realTimeDate/";
+    private int page = 1;
+
+    String url = SaveData.mainUrl + "device/deviceAll";
+    @Bind(R.id.refresh)
+    MaterialRefreshLayout refresh;
+    private String urlThis = SaveData.mainUrl + "device/realTimeDate/";
 
     List<DeviceGet.ResultBean> resultBeans;
+    List<DeviceGet.ResultBean> saveResultBeans = new ArrayList<>();
+    private DeviceAdapter deviceAdapter;
 
     @Override
     public void bindListener() {
@@ -62,12 +67,34 @@ public class DeviceActivity extends BaseActivity implements View.OnClickListener
 //                startActivity(intent);
 //            }
 //        });
+        refresh.setMaterialRefreshListener(new MaterialRefreshListener() {
+            @Override
+            public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
+                if (page != 1) {
+                    page--;
+                    getData(page);
+                }
+                refresh.finishRefresh();
+            }
+
+            @Override
+            public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
+                page++;
+                getData(page);
+                Log.d("page", page + "");
+            }
+        });
     }
 
     @Override
     public void initData() {
+        refresh.setLoadMore(true);
         devicenameTv.setText(getIntent().getStringExtra("buildname"));
-        getData();
+
+        deviceAdapter = new DeviceAdapter(mContext, R.layout.item_deviceall, resultBeans);
+//        listFujinshebeiliebiao.setAdapter(deviceAdapter);
+        getData(page);
+
     }
 
     @Override
@@ -85,21 +112,42 @@ public class DeviceActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
-    private void getData() {
+    private void getData(final int page) {
         DevicePost devicePost = new DevicePost();
 //        devicePost.setId(getIntent().getStringExtra("buildId"));
         devicePost.setId(SaveData.deviceId);
+        devicePost.setPage(page);
+        devicePost.setRows(10);
         Gson gson = new Gson();
         String str = gson.toJson(devicePost);
         JsonObject jsonObject = new JsonParser().parse(str).getAsJsonObject();
         getDataFromServer(Request.Method.POST, url, jsonObject, DeviceGet.class, new Response.Listener<DeviceGet>() {
             @Override
             public void onResponse(final DeviceGet response) {
+                if (page == 1) {
+                    saveResultBeans = response.getResult();
+                    if (saveResultBeans == null) {
+                        saveResultBeans = new ArrayList<>();
+                    }
+                } else {
+                    if (response.getResult() != null) {
+                        saveResultBeans.addAll(response.getResult());
+                    }
+                }
+
+
                 //设置某个建筑群下的设备列表
-                DeviceAdapter deviceAdapter = new DeviceAdapter(mContext, R.layout.item_deviceall, response.getResult());
+                deviceAdapter = new DeviceAdapter(mContext, R.layout.item_deviceall, response.getResult());
                 listFujinshebeiliebiao.setAdapter(deviceAdapter);
-                resultBeans = response.getResult();
+//                resultBeans = response.getResult();
+//                deviceAdapter.setList(saveResultBeans);
+                deviceAdapter.notifyDataSetChanged();
+
+
                 Log.d("成功", "成功");
+                if (page != 1) {
+                    refresh.finishRefreshLoadMore();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
