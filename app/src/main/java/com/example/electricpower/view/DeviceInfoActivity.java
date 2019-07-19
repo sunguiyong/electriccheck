@@ -19,6 +19,7 @@ import com.example.electricpower.entity.to.DeviceInfo;
 import com.example.electricpower.entity.to.SaveData;
 import com.example.electricpower.entity.to.mpdata.MPToday;
 import com.example.electricpower.entity.to.wenshidu.WenShiGet;
+import com.example.electricpower.utils.dialog.photo.date.DateUtils;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -70,6 +71,7 @@ public class DeviceInfoActivity extends BaseActivity implements View.OnClickList
             case R.id.history: {
 //                showToast("shebeiactivity invoked!!");
                 Intent intent = new Intent(mContext, ShebeiActivity.class);
+                intent.putExtra("devicename", devicenameTv.getText());
                 startActivity(intent);
                 break;
             }
@@ -129,26 +131,36 @@ public class DeviceInfoActivity extends BaseActivity implements View.OnClickList
         YAxis rightAxis = mLineChart.getAxisRight();
         rightAxis.setEnabled(false);
         YAxis leftAxis = mLineChart.getAxisLeft();
-        leftAxis.setAxisMinimum(0);        //保证Y轴从0开始，不然会上移一点
+        leftAxis.setAxisMinimum(-30);        //保证Y轴从0开始，不然会上移一点
         leftAxis.setDrawGridLines(false);
         leftAxis.setCenterAxisLabels(true);
 
 
-        leftAxis.setAxisMaximum(100);//Y轴最大值
+        leftAxis.setAxisMaximum(70);//Y轴最大值
         leftAxis.setLabelCount(2);//Y轴最小值
         //警戒线
-        LimitLine limitLine = new LimitLine(100f, "");
+        LimitLine limitLine = new LimitLine(70f, "");
         limitLine.setLineWidth(1f);
         limitLine.setLineColor(getResources().getColor(R.color.green_near));
 
-        LimitLine limitLine1 = new LimitLine(50f, "");
+        LimitLine limitLine1 = new LimitLine(20f, "");
         limitLine1.setLineColor(getResources().getColor(R.color.green_near));
 
         //x轴
         XAxis xAxis = mLineChart.getXAxis();
-        xAxis.setAxisMinimum(0);
-        xAxis.setAxisMaximum(xSize - 1);
-        xAxis.setLabelCount(11);
+        //X轴最小值
+        String dateXm = DateUtils.stampToDate(listT.get(0).getGmt_create() + "");
+        String dateXm1 = dateXm.substring(11, 13);
+        int min = Integer.parseInt(dateXm1);
+        xAxis.setAxisMinimum(min);
+
+        //X轴最大值
+        String dateX = DateUtils.stampToDate(listT.get(xSize - 1).getGmt_create() + "");
+        String dateX1 = dateX.substring(11, 13);
+        int max = Integer.parseInt(dateX1);
+        xAxis.setAxisMaximum(max);
+
+        xAxis.setLabelCount(listT.size() - 1);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);//x轴位置
         xAxis.setDrawGridLines(false);//x轴方向的背景线
         xAxis.setEnabled(true);//X可见
@@ -166,7 +178,9 @@ public class DeviceInfoActivity extends BaseActivity implements View.OnClickList
         //1.设置x轴和y轴的点
         List<Entry> entries = new ArrayList<>();
         for (int i = 0; i < xSize; i++) {
-            entries.add(new Entry(i, (float) listT.get(i).getNew_data()));
+            String date = DateUtils.stampToDate(listT.get(i).getGmt_create() + "");
+            String date1 = date.substring(11, 13);
+            entries.add(new Entry(Integer.parseInt(date1), (int) listT.get(i).getNew_data()));
         }
         LineDataSet dataSet = new LineDataSet(entries, "");
         dataSet.setDrawFilled(true);
@@ -182,7 +196,6 @@ public class DeviceInfoActivity extends BaseActivity implements View.OnClickList
         mLineChart.setBackgroundColor(Color.WHITE);
         mLineChart.setPadding(20, 10, 10, 20);
         mLineChart.setData(lineData);
-        mLineChart.invalidate();//refresh
         mLineChart.animateY(1000);//动画效果
 
 
@@ -216,9 +229,20 @@ public class DeviceInfoActivity extends BaseActivity implements View.OnClickList
 
         //x轴
         XAxis xAxis = mlineChart1.getXAxis();
-        xAxis.setAxisMinimum(0);
-        xAxis.setAxisMaximum(xSize - 1);
-        xAxis.setLabelCount(11);
+
+        //X轴最小值
+        String dateXm = DateUtils.stampToDate(listH.get(0).getGmt_create() + "");
+        String dateXm1 = dateXm.substring(11, 13);
+        int min = Integer.parseInt(dateXm1);
+        xAxis.setAxisMinimum(min);
+
+        //X轴最大值
+        String dateX = DateUtils.stampToDate(listH.get(xSize - 1).getGmt_create() + "");
+        String dateX1 = dateX.substring(11, 13);
+        int max = Integer.parseInt(dateX1);
+        xAxis.setAxisMaximum(max);
+
+        xAxis.setLabelCount(listH.size() - 1);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);//x轴位置
         xAxis.setDrawGridLines(false);//x轴方向的背景线
         xAxis.setEnabled(true);//X可见
@@ -236,8 +260,10 @@ public class DeviceInfoActivity extends BaseActivity implements View.OnClickList
         List<Entry> entries = new ArrayList<>();
         for (int i = 0; i < xSize; i++) {
 //            entries.add(new Entry(i, new Random().nextInt(80)));
-            entries.add(new Entry(i, (float) listH.get(i).getNew_data()));
-
+            String date = DateUtils.stampToDate(listH.get(i).getGmt_create() + "");
+            String date1 = date.substring(11, 13);
+            Log.d("dateMy", date1);
+            entries.add(new Entry(Float.parseFloat(date1), (float) listH.get(i).getNew_data()));
         }
         LineDataSet dataSet = new LineDataSet(entries, "");
         dataSet.setDrawFilled(true);
@@ -296,7 +322,6 @@ public class DeviceInfoActivity extends BaseActivity implements View.OnClickList
                     }
                     initTestData1(listT.size());
                     initTestData2(listH.size());
-
                 }
             }
         }, new Response.ErrorListener() {

@@ -40,6 +40,9 @@ import java.util.Random;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+/**
+ * 可查询历史记录的设备信息
+ */
 public class ShebeiActivity extends BaseActivity implements View.OnClickListener, OnChartValueSelectedListener, DatePickerDialog.OnDateSetListener {
     int x = R.layout.activity_shebeidetail;
     @Bind(R.id.line_chart1)
@@ -139,11 +142,11 @@ public class ShebeiActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void initData() {
-//        String name = getIntent().getExtras().getString("name");
-//        if (name == "" || name == null) {
-//            name = "未知设备名";
-//        }
-//        shebeinameTv.setText(name);
+        String name = getIntent().getExtras().getString("devicename");
+        if (name == "" || name == null) {
+            name = "未知设备名";
+        }
+        shebeinameTv.setText(name);
 
     }
 
@@ -191,26 +194,36 @@ public class ShebeiActivity extends BaseActivity implements View.OnClickListener
         YAxis rightAxis = mLineChart.getAxisRight();
         rightAxis.setEnabled(false);
         YAxis leftAxis = mLineChart.getAxisLeft();
-        leftAxis.setAxisMinimum(0);        //保证Y轴从0开始，不然会上移一点
+        leftAxis.setAxisMinimum(-30);        //保证Y轴从0开始，不然会上移一点
         leftAxis.setDrawGridLines(false);
         leftAxis.setCenterAxisLabels(true);
 
 
-        leftAxis.setAxisMaximum(100);//Y轴最大值
+        leftAxis.setAxisMaximum(70);//Y轴最大值
         leftAxis.setLabelCount(2);//Y轴最小值
         //警戒线
-        LimitLine limitLine = new LimitLine(100f, "");
+        LimitLine limitLine = new LimitLine(70f, "");
         limitLine.setLineWidth(1f);
         limitLine.setLineColor(getResources().getColor(R.color.green_near));
 
-        LimitLine limitLine1 = new LimitLine(50f, "");
+        LimitLine limitLine1 = new LimitLine(20f, "");
         limitLine1.setLineColor(getResources().getColor(R.color.green_near));
 
         //x轴
         XAxis xAxis = mLineChart.getXAxis();
-        xAxis.setAxisMinimum(0);
-        xAxis.setAxisMaximum(size - 1);
-        xAxis.setLabelCount(11);
+        //X轴最小值
+        String dateXm = DateUtils.stampToDate(listT.get(0).getGmt_create() + "");
+        String dateXm1 = dateXm.substring(11, 13);
+        int min = Integer.parseInt(dateXm1);
+        xAxis.setAxisMinimum(min);
+
+        //X轴最大值
+        String dateX = DateUtils.stampToDate(listT.get(size - 1).getGmt_create() + "");
+        String dateX1 = dateX.substring(11, 13);
+        int max = Integer.parseInt(dateX1);
+        xAxis.setAxisMaximum(max);
+
+        xAxis.setLabelCount(listT.size() - 1);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);//x轴位置
         xAxis.setDrawGridLines(false);//x轴方向的背景线
         xAxis.setEnabled(true);//X可见
@@ -228,7 +241,11 @@ public class ShebeiActivity extends BaseActivity implements View.OnClickListener
         //1.设置x轴和y轴的点
         List<Entry> entries = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            entries.add(new Entry(i, (float) listT.get(i).getNew_data()));
+//            entries.add(new Entry(i, (float) listT.get(i).getNew_data()));
+            String date = DateUtils.stampToDate(listT.get(i).getGmt_create() + "");
+            String date1 = date.substring(11, 13);
+            Log.d("date1", date1);
+            entries.add(new Entry(Integer.parseInt(date1), (int) listT.get(i).getNew_data()));
         }
         LineDataSet dataSet = new LineDataSet(entries, "");
         dataSet.setDrawFilled(true);
@@ -275,9 +292,19 @@ public class ShebeiActivity extends BaseActivity implements View.OnClickListener
 
         //x轴
         XAxis xAxis = mlineChart1.getXAxis();
-        xAxis.setAxisMinimum(0);
-        xAxis.setAxisMaximum(size - 1);
-        xAxis.setLabelCount(11);
+
+        //X轴最小值
+        String dateXm = DateUtils.stampToDate(listH.get(0).getGmt_create() + "");
+        String dateXm1 = dateXm.substring(11, 13);
+        int min = Integer.parseInt(dateXm1);
+        xAxis.setAxisMinimum(min);
+        //X轴最大值
+        String dateX = DateUtils.stampToDate(listH.get(size - 1).getGmt_create() + "");
+        String dateX1 = dateX.substring(11, 13);
+        int max = Integer.parseInt(dateX1);
+        xAxis.setAxisMaximum(max);
+
+        xAxis.setLabelCount(listH.size()-1);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);//x轴位置
         xAxis.setDrawGridLines(false);//x轴方向的背景线
         xAxis.setEnabled(true);//X可见
@@ -294,7 +321,12 @@ public class ShebeiActivity extends BaseActivity implements View.OnClickListener
         //1.设置x轴和y轴的点
         List<Entry> entries = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            entries.add(new Entry(i, (float) listH.get(i).getNew_data()));
+//            entries.add(new Entry(i, (float) listH.get(i).getNew_data()));
+            String date = DateUtils.stampToDate(listH.get(i).getGmt_create() + "");
+            String date1 = date.substring(11, 13);
+            entries.add(new Entry(Integer.parseInt(date1), (int) listH.get(i).getNew_data()));
+
+            Log.d("date1", date1);
         }
         LineDataSet dataSet = new LineDataSet(entries, "");
         dataSet.setDrawFilled(true);

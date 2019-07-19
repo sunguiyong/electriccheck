@@ -1,5 +1,6 @@
 package com.example.electricpower.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -42,6 +43,7 @@ public class MyView2 extends View {
     private Paint paint4 = new Paint();
     //重写该方法，进行绘图
 
+    @SuppressLint("NewApi")
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -87,7 +89,7 @@ public class MyView2 extends View {
                 getHeight() - 20f, viewWidth / 2 - 100f,
                 getHeight() - 150f, 15f, 15f, paint1);
         //画底部温度文字
-        canvas.drawText("温度", viewWidth / 2, getHeight() - 65f, paint);
+        canvas.drawText("湿度", viewWidth / 2, getHeight() - 65f, paint);
         //画水银柱矩形背景
         canvas.drawRect(viewWidth / 2 - 45f, getHeight() - 150f, viewWidth / 2 + 45f, 95f, paint4);
         //画水银柱矩形

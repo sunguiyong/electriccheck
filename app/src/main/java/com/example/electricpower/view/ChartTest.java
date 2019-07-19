@@ -48,6 +48,7 @@ public class ChartTest extends BaseActivity implements View.OnClickListener, OnC
     TextView shebeinameTv;
     @Bind(R.id.line_chart2)
     LineChart mlineChart1;
+
     private List<MPToday.ResultBean> list;
     List<MPToday.ResultBean> listT = new ArrayList<>();
     List<MPToday.ResultBean> listH = new ArrayList<>();
@@ -74,7 +75,11 @@ public class ChartTest extends BaseActivity implements View.OnClickListener, OnC
 
     @Override
     public void initData() {
-        shebeinameTv.setText(DeviceInfo.deviceName);
+        String name = getIntent().getStringExtra("mac");
+//        String name2 = name.replace(":", "");
+//        String name1 = name2.substring(0, 6);
+
+        shebeinameTv.setText(getIntent().getStringExtra("macsave"));
         getDataThis();
     }
 
@@ -92,6 +97,7 @@ public class ChartTest extends BaseActivity implements View.OnClickListener, OnC
     public void onNothingSelected() {
 
     }
+
 
     public void initTestData1(int size) {
         Description description = new Description();
@@ -130,7 +136,7 @@ public class ChartTest extends BaseActivity implements View.OnClickListener, OnC
         xAxis.setAxisMinimum(min);
 
         //X轴最大值
-        String dateX = DateUtils.stampToDate(listH.get(size - 1).getGmt_create() + "");
+        String dateX = DateUtils.stampToDate(listT.get(size - 1).getGmt_create() + "");
         String dateX1 = dateX.substring(11, 13);
         int max = Integer.parseInt(dateX1);
         xAxis.setAxisMaximum(max);
@@ -175,7 +181,7 @@ public class ChartTest extends BaseActivity implements View.OnClickListener, OnC
         mLineChart.setBackgroundColor(Color.WHITE);
         mLineChart.setPadding(20, 10, 10, 20);
         mLineChart.setData(lineData);
-
+        mLineChart.animateY(1000);//动画效果
 
     }
 
@@ -209,17 +215,19 @@ public class ChartTest extends BaseActivity implements View.OnClickListener, OnC
         XAxis xAxis = mlineChart1.getXAxis();
 
         //X轴最小值
-        String dateXm = DateUtils.stampToDate(listH.get(0).getGmt_create() + "");
+        String dateXm = DateUtils.stampToDate(listT.get(0).getGmt_create() + "");
         String dateXm1 = dateXm.substring(11, 13);
-        xAxis.setAxisMinimum(Integer.parseInt(dateXm1));
+        int min = Integer.parseInt(dateXm1);
+        xAxis.setAxisMinimum(min);
 
         //X轴最大值
-        String dateX = DateUtils.stampToDate(listH.get(size - 1).getGmt_create() + "");
+        String dateX = DateUtils.stampToDate(listT.get(size - 1).getGmt_create() + "");
         String dateX1 = dateX.substring(11, 13);
+        int max = Integer.parseInt(dateX1);
+        xAxis.setAxisMaximum(max);
 
-        xAxis.setAxisMaximum(Integer.parseInt(dateX1));
         Log.d("listH.get", listH.get(size - 1).getGmt_create() + "");
-        xAxis.setLabelCount(listH.size());
+        xAxis.setLabelCount(listH.size() - 1);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);//x轴位置
         xAxis.setDrawGridLines(false);//x轴方向的背景线
         xAxis.setEnabled(true);//X可见
@@ -251,12 +259,14 @@ public class ChartTest extends BaseActivity implements View.OnClickListener, OnC
         LineData lineData = new LineData(dataSet);
 
 
-        mlineChart1.invalidate();//refresh
         mlineChart1.setScaleEnabled(false);
         mlineChart1.getDescription().setEnabled(false);
         mlineChart1.setBackgroundColor(Color.WHITE);
         mlineChart1.setPadding(20, 10, 10, 20);
+        mlineChart1.invalidate();//refresh
         mlineChart1.setData(lineData);
+        mlineChart1.animateY(1000);
+
     }
 
     private void getDataThis() {

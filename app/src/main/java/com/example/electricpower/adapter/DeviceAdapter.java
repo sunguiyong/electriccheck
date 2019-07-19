@@ -41,8 +41,8 @@ public class DeviceAdapter extends ArrayAdapter<DeviceGet.ResultBean> {
         this.list = list;
     }
 
-    public void addLists(int position,List<DeviceGet.ResultBean> list){
-        if (list!=null&&list.size()>0){
+    public void addLists(int position, List<DeviceGet.ResultBean> list) {
+        if (list != null && list.size() > 0) {
             this.list.addAll(list);
             notifyDataSetChanged();
         }
@@ -50,9 +50,9 @@ public class DeviceAdapter extends ArrayAdapter<DeviceGet.ResultBean> {
 
     @Override
     public int getCount() {
-        if (list!=null){
+        if (list != null) {
             return list.size();
-        }else {
+        } else {
             return 0;
         }
     }
@@ -92,7 +92,6 @@ public class DeviceAdapter extends ArrayAdapter<DeviceGet.ResultBean> {
 
         if (resultBean.getStoreData().get(1) != null) {
             viewHolder.wenduTv.setText("温度：" + (double) Math.round((resultBean.getStoreData().get(1).getNewData()) * 100) / 100 + "");
-
         } else {
             viewHolder.wenduTv.setText("--");
         }

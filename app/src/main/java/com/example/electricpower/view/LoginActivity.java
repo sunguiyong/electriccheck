@@ -1,8 +1,11 @@
 package com.example.electricpower.view;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -23,6 +26,7 @@ import com.example.electricpower.entity.to.TokenSave;
 import com.example.electricpower.entity.to.login.LoginPost;
 import com.example.electricpower.entity.to.login.LoginReceived;
 import com.example.electricpower.utils.dialog.photo.apputil.AppUtils;
+import com.example.electricpower.utils.dialog.photo.permissions.PermissionUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -68,10 +72,38 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         zhucezhanghaoTv.setOnClickListener(this);
     }
 
+    private PermissionUtil permissionUtil;
+    private final int REQUEST_CODE = 2;//请求码
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.i("request", "success");
+                } else {
+                    Log.i("request", "failed");
+                }
+
+                return;
+            }
+        }
+    }
+
     @Override
     public void initData() {
         versionTv.setText("版本号：" + AppUtils.getVersionName(mContext));
         fujinshebeiTv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+
+
+//        if (permissionUtil.isOwnPermisson(this, Manifest.permission.INTERNET)) {
+//            //如果已经拥有改权限
+//            Log.i("request","own");
+//        } else {
+//            //没有改权限，需要进行请求
+//            permissionUtil.requestPermission(this, Manifest.permission.INTERNET, REQUEST_CODE);
+//        }
     }
 
     @Override

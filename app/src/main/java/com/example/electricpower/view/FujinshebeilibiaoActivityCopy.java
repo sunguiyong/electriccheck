@@ -1,17 +1,22 @@
 package com.example.electricpower.view;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.le.AdvertiseSettings;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
+import android.bluetooth.le.ScanSettings;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
@@ -20,10 +25,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.clj.fastble.BleManager;
+import com.android.volley.Request;
+import com.android.volley.Response;
 import com.example.electricpower.BaseActivity;
 import com.example.electricpower.R;
 import com.example.electricpower.adapter.FujinshebeiAdapterCopy;
+import com.example.electricpower.entity.to.SaveData;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,11 +43,12 @@ import butterknife.Bind;
  */
 public class FujinshebeilibiaoActivityCopy extends BaseActivity implements View.OnClickListener {
     int x = R.layout.activity_fujinshebeiliebiao;
-
     @Bind(R.id.back_img)
     ImageView backImg;
     @Bind(R.id.list_fujinshebeiliebiao)
     ListView listFujinshebeiliebiao;
+
+
     BluetoothManager bluetoothManager;
 
     BluetoothAdapter mBluetoothAdapter;
@@ -54,8 +63,6 @@ public class FujinshebeilibiaoActivityCopy extends BaseActivity implements View.
 
     private BluetoothAdapter.LeScanCallback mLeScanCallback;
     FujinshebeiAdapterCopy fujinshebeiAdapterCopy;
-    Handler handler;
-    ArrayList<BluetoothDevice> bluetoothDevices;
 
     @Override
     public void bindListener() {
@@ -67,35 +74,17 @@ public class FujinshebeilibiaoActivityCopy extends BaseActivity implements View.
                 BluetoothDevice device = fujinshebeiAdapterCopy
                         .getDevice(position);
 //                showToast(fujinshebeiAdapterCopy.getScanRecords().get(0).toString());
-                scanRecords=fujinshebeiAdapterCopy.getScanRecords();
-                fujinshebeiAdapterCopy.checkScanResult(scanRecords,position);
+                scanRecords = fujinshebeiAdapterCopy.getScanRecords();
+                fujinshebeiAdapterCopy.checkScanResult(scanRecords, position);
 
                 Intent intent = new Intent(FujinshebeilibiaoActivityCopy.this, ChartTest.class);
-                intent.putExtra("mac",device.getAddress());
+
+                intent.putExtra("mac", device.getAddress());
+                intent.putExtra("macsave",SaveData.listName.get(position));
+                Log.d("macItem",device.getAddress());
                 startActivity(intent);
             }
         });
-        //下拉刷新监听
-//        refresh.setMaterialRefreshListener(new MaterialRefreshListener() {
-//            @Override
-//            public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
-//                //下拉刷新块点击监听
-//                refresh.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        mBluetoothAdapter.getBluetoothLeScanner().stopScan(scanCallback);
-//                        refresh.finishRefresh();
-//                    }
-//                });
-//                doBluetooth();
-//                if (isOpen) {
-////                    list.clear();
-////                    mBluetoothAdapter.getBluetoothLeScanner().startScan(scanCallback);
-//                } else {
-//                    showToast("请检查蓝牙是否打开！");
-//                }
-//            }
-//        });
     }
 
     @Override
@@ -112,7 +101,6 @@ public class FujinshebeilibiaoActivityCopy extends BaseActivity implements View.
         registerReceiver(mReceiver, intentFilter2);
         Log.d("开始搜索设备！------", "开始搜索设备");
 
-
         bluetoothManager = (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
         //蓝牙权限检测
@@ -120,6 +108,7 @@ public class FujinshebeilibiaoActivityCopy extends BaseActivity implements View.
         //设置数据适配器
         fujinshebeiAdapterCopy = new FujinshebeiAdapterCopy(this);
         listFujinshebeiliebiao.setAdapter(fujinshebeiAdapterCopy);
+//        handler.postDelayed(task,1000);
         getScanResualt();
         //新线程开启ble扫描
         new Thread(new Runnable() {
@@ -127,10 +116,18 @@ public class FujinshebeilibiaoActivityCopy extends BaseActivity implements View.
             @Override
             public void run() {
                 mBluetoothAdapter.startLeScan(mLeScanCallback);
-
             }
         }).start();
     }
+
+    private Handler handler = new Handler();
+    private Runnable task = new Runnable() {
+        @Override
+        public void run() {
+            handler.postDelayed(this, 1000);
+            getScanResualt();
+        }
+    };
 
     private void getScanResualt() {
         mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
@@ -139,32 +136,27 @@ public class FujinshebeilibiaoActivityCopy extends BaseActivity implements View.
                                  final byte[] scanRecord) {
                 FujinshebeilibiaoActivityCopy.this.runOnUiThread(new Runnable() {
                     public void run() {
-                        Log.d("scancallback：", "运行");
-                        if (device.getName() != "" || device.getName() != null) {
-                            fujinshebeiAdapterCopy.addDevice(device, rssi,
-                                    bytesToHex(scanRecord));
-
-                            fujinshebeiAdapterCopy.notifyDataSetChanged();
-                            invalidateOptionsMenu();
+                        if (device.getName() != "" && device.getName() != null && device.getName().startsWith("YG")) {
+                            refreshListView(device, rssi, scanRecord);
                         }
-
                     }
                 });
             }
         };
     }
 
-    private ScanCallback scanCallback = new ScanCallback() {
-        @Override
-        public void onScanResult(int callbackType, ScanResult result) {
-            String data = bytesToHexString(result.getScanRecord().getBytes());
-            Log.d("设备名称：" + result.getDevice().getName(), data);
-
-            if (result.getDevice().getType() == 2) {
-                list.add(result);
-            }
-        }
-    };
+    /**
+     * 存放扫描到的设备并且更新listview
+     */
+    public void refreshListView(BluetoothDevice device, int rssi, byte[] scanRecord) {
+        Log.d("scancallback：", "运行");
+        String address = device.getAddress();
+        Log.d("addressMy", address);
+        fujinshebeiAdapterCopy.addDevice(device, rssi,
+                bytesToHex(scanRecord));
+        fujinshebeiAdapterCopy.notifyDataSetChanged();
+//        invalidateOptionsMenu();
+    }
 
     @Override
     protected void onPause() {
@@ -188,23 +180,6 @@ public class FujinshebeilibiaoActivityCopy extends BaseActivity implements View.
             finish();
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, 1);
-
-//        } else {
-//            isOpen = true;
-//            //已扫描过的设备
-//            Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-//            if (pairedDevices.size() > 0) {
-//                for (BluetoothDevice device : pairedDevices) {
-//                    Log.d("已扫描过的设备", "invoked");
-//
-////                    list.add(device);
-//                }
-////                FujinshebeiAdapter fujinshebeiAdapter = new FujinshebeiAdapter(mContext, R.layout.item_fujinshebei, list);
-////                listFujinshebeiliebiao.setAdapter(fujinshebeiAdapter);
-////                fujinshebeiAdapter.notifyDataSetChanged();
-//            } else {
-//                Log.d("===", "之前扫描设备为空");
-//            }
         }
     }
 
@@ -299,20 +274,5 @@ public class FujinshebeilibiaoActivityCopy extends BaseActivity implements View.
             hexChars[j * 2 + 1] = hexArray[v & 0x0F];
         }
         return new String(hexChars);
-    }
-
-    public void checkBle() {
-        if (BleManager.getInstance().isSupportBle()) {
-            Log.d("支持ble", "aaa");
-            if (BleManager.getInstance().isBlueEnable()) {
-                Log.d("支持ble并且打开", "");
-            } else {
-                showToast("请打开蓝牙！");
-                finish();
-            }
-        } else {
-            showToast("不支持ble");
-        }
-
     }
 }
